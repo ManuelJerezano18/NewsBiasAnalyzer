@@ -4,8 +4,13 @@
 The News Article Bias Analyzer is a web-based tool designed to help users critically evaluate the political and ideological biases present in news articles. Utilizing natural language processing (NLP) and machine learning techniques, the application provides a bias score and visualizes where an article falls on the political spectrum, aiming to improve media literacy and encourage more balanced information consumption.
 
 
-## Features
+## Accessing the Website
 
+You can access the News Article Bias Analyzer directly through your web browser by visiting:
+
+https://newsbiascheck.com
+
+## Features Available Online:
 - Article Submission for Bias Analysis: Users can submit a news article either by pasting the URL or the content of the article itself.
 - Bias Detection: Using NLP and machine learning, the system analyzes the article and provides a bias score.
 - Bias Score Visualization: Visual representation of the article's bias on a political spectrum.
@@ -55,3 +60,7 @@ The News Article Bias Analyzer is a web-based tool designed to help users critic
 **Others**
 - Docker (for containerized deployment)
 - AWS (for hosting)
+## License
+
+[MIT](https://choosealicense.com/licenses/mit/)
+
