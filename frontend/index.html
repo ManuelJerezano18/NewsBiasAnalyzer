@@ -84,15 +84,17 @@
         <section id="submit" class="full-width-section submit-article" style="background-color: #F7F5FB;">
             <div class="container">
                 <h2>Submit an Article</h2>
-                <form action="#" method="post">
+                <form id="articleForm" action="#" method="post">
                     <div class="url-upload">
                         <i class="fas fa-upload"></i>
-                        <textarea placeholder="Paste the article URL or text here..." required></textarea>
+                        <textarea id="url" placeholder="Paste the article URL or text here..." required></textarea>
+                        <div id="error-message" style="color:red;"></div> <!-- Error message placeholder -->
                     </div>
-                    <button type="submit" class="btn-submit">Analyze Article</button>
+                    <button id="submitButton" type="submit" class="btn-submit">Submit Article For Analysis</button>
                 </form>
             </div>
         </section>
+
         
         <!-- Testimonials Section -->
         <section id="testimonials" class="full-width-section testimonials-section" style="background-color: #FFFFFF;">
@@ -135,6 +137,6 @@
         </footer>
     </div>
     
-    <script src="js/scripts.js"></script>
+    <script type="module" src="js/scripts.js"></script>
 </body>
 </html>
