@@ -105,7 +105,7 @@ body {
     color: #F7F5FB; /* Ghost White */
     padding: 0.8rem 1.5rem;
     text-decoration: none;
-    border-radius: 20px;
+    border-radius: 2vmin;;
     font-family: 'Lato', sans-serif;
     display: inline-block;
 }
@@ -211,7 +211,7 @@ body {
     background: #4CB944; /* Dark Pastel Green */
     color: #F7F5FB; /* Ghost White */
     padding: 0.75rem 2rem;
-    border-radius: 20px;
+    border-radius: 2vmin;
     border: none;
     cursor: pointer;
     font-family: 'Lato', sans-serif;
@@ -265,7 +265,7 @@ body {
     color: #F7F5FB; /* Ghost White */
     padding: 0.8rem 2rem;
     text-decoration: none;
-    border-radius: 30px; /* More rounded for better appearance */
+    border-radius: 3vmin; /* More rounded for better appearance */
     font-family: 'Lato', sans-serif;
     font-size: 1.2rem;
     display: inline-block;
@@ -319,7 +319,7 @@ footer {
 
 .how-it-works h2 {
     font-family: 'Montserrat', sans-serif;
-    font-size: 2.5rem;
+    font-size: 2rem;
     margin-bottom: 1rem;
     color: #25171A; /* Licorice */
 }
@@ -361,4 +361,154 @@ footer {
 .step p {
     font-family: 'Lato', sans-serif;
     color: #020122;
+}
+
+/* General Styling */
+.container-header, .container-profile, .container-footer, .container-home, .container-hiw {
+    width: 90%;
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Top Bar Styling */
+header {
+    width: 100vw; /* Full width of the viewport */
+    background: #020122; /* Oxford Blue from the color palette */
+    padding: 0.8rem 0;
+    position: fixed; /* Keep the top bar fixed at the top */
+    top: 0;
+    left: 0;
+    z-index: 1000;
+}
+
+/* Ensure content below header is not clipped */
+body, html {
+    height: 100%;
+    margin: 0;
+    padding: 0;
+}
+
+.home-content {
+    padding-top: 6rem; /* Adjust this value as needed */
+}
+.how-it-works {
+    padding-top: 8rem; /* Adjust this value as needed */
+}
+
+/* Profile Section */
+.profile-section {
+    padding-top:8rem; /* Ensure the profile section starts below the fixed top bar */
+    min-height: calc(100vh - 6rem); /* Ensure the profile section takes the remaining height */
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-start;
+    background: #F7F5FB; /* Ghost White */
+    text-align: left;
+}
+
+/* Profile Layout */
+.profile-content {
+    display: flex;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    width: 100%;
+}
+
+/* Profile Info on the Left */
+.profile-info {
+    background: #E5E5E5; /* Soft Stone Gray from the color palette */
+    padding: 0rem 2rem;
+    border-radius: 15px;
+    width: 30%; /* Adjust the width of the left panel */
+    text-align: left; /* Align text to the left */
+}
+
+/* Profile Picture */
+.profile-picture {
+    font-size: 6rem;
+    color: #8f8f8f; /* Dark Pastel Green from the color palette */
+    margin-bottom: 1rem;
+}
+
+/* Profile Details */
+.profile-details h2 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: #25171A; /* Licorice */
+}
+
+.profile-details p {
+    font-family: 'Lato', sans-serif;
+    font-size: 1.1rem;
+    color: #25171A;
+    margin-bottom: 0.8rem;
+    text-align: left; /* Align profile information to the left */
+}
+
+/* Empty Area on the Right */
+.empty-area {
+    background: #fff; /* White background */
+    border-radius: 15px;
+    width: 65%; /* Adjust width of the right area */
+    padding: 2rem;
+}
+
+/* Footer Styling */
+footer {
+    background: #020122; /* Oxford Blue */
+    color: #F7F5FB; /* Ghost White */
+    text-align: center;
+    padding: 1.5rem 0;
+    width: 100%;
+    position: relative;
+    bottom: 0;
+}
+
+/* Full-width section background */
+.full-width-section {
+    width: 100vw; /* Full width of the viewport */
+    display: flex;
+    justify-content: center; /* Center the content */
+    padding: 2rem 0; /* Padding for top and bottom */
+}
+
+/* Full-width header and footer */
+.full-width-header, .full-width-footer {
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    padding: 1rem 0; /* Add padding for better spacing */
+}
+
+/* Container for centered content */
+.container, .container-header, .container-footer {
+    width: 90%;
+    max-width: 1200px; /* Maximum width */
+}
+
+/* Hero Section */
+.hero {
+    text-align: center;
+}
+
+/* Features Section */
+.features-section {
+    background-color: #FFFFFF;
+}
+
+/* Submit Article Section */
+.submit-article {
+    background-color: #F7F5FB;
+}
+
+/* Testimonials Section */
+.testimonials-section {
+    background-color: #FFFFFF;
+}
+
+/* Footer */
+.full-width-footer {
+    background-color: #020122; /* Oxford Blue */
+    color: white;
 }
