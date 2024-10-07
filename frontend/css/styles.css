@@ -386,6 +386,7 @@ body, html {
     height: 100%;
     margin: 0;
     padding: 0;
+    
 }
 
 .home-content {
@@ -410,24 +411,26 @@ body, html {
 .profile-content {
     display: flex;
     justify-content: space-between;
-    flex-wrap: wrap;
+    flex-wrap: nowrap;
     width: 100%;
+    gap: 20px;
 }
 
 /* Profile Info on the Left */
 .profile-info {
     background: #E5E5E5; /* Soft Stone Gray from the color palette */
     padding: 0rem 2rem;
-    border-radius: 15px;
+    border-radius: 2vmin;
     width: 30%; /* Adjust the width of the left panel */
     text-align: left; /* Align text to the left */
 }
 
 /* Profile Picture */
 .profile-picture {
-    font-size: 6rem;
+    font-size: 10rem;
     color: #8f8f8f; /* Dark Pastel Green from the color palette */
     margin-bottom: 1rem;
+    text-align: center;
 }
 
 /* Profile Details */
@@ -436,20 +439,21 @@ body, html {
     font-size: 2rem;
     margin-bottom: 1rem;
     color: #25171A; /* Licorice */
+    text-align: center;
 }
 
 .profile-details p {
     font-family: 'Lato', sans-serif;
     font-size: 1.1rem;
     color: #25171A;
-    margin-bottom: 0.8rem;
+    margin-bottom: 0.9rem;
     text-align: left; /* Align profile information to the left */
 }
 
 /* Empty Area on the Right */
 .empty-area {
     background: #fff; /* White background */
-    border-radius: 15px;
+    border-radius: 2vmin;
     width: 65%; /* Adjust width of the right area */
     padding: 2rem;
 }
@@ -473,13 +477,7 @@ footer {
     padding: 2rem 0; /* Padding for top and bottom */
 }
 
-/* Full-width header and footer */
-.full-width-header, .full-width-footer {
-    width: 100vw;
-    display: flex;
-    justify-content: center;
-    padding: 1rem 0; /* Add padding for better spacing */
-}
+
 
 /* Container for centered content */
 .container, .container-header, .container-footer {
@@ -507,8 +505,66 @@ footer {
     background-color: #FFFFFF;
 }
 
-/* Footer */
-.full-width-footer {
-    background-color: #020122; /* Oxford Blue */
+/* Ensure the container for the history section takes up the correct space */
+.empty-area {
+    background: #fff;
+    border-radius: 2vmin;
+    width: 100%;  /* Full width for the table area */
+    /*box-shadow: 0 5px 15px rgba(0, 0, 0, 0.1);*/
+    padding: 2rem;
+    margin-top: 0;
+
+    
+}
+
+/* Styling for the history table */
+.article-history-table {
+    width: 100%;  /* Ensure the table takes full width */
+    border-collapse: collapse;
+    margin-bottom: 1.5rem;
+}
+
+.article-history-table th, .article-history-table td {
+    padding: 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid #ddd;
+}
+
+.article-history-table th {
+    background-color: #f2f2f2;
+    font-family: 'Montserrat', sans-serif;
+}
+
+.article-history-table td {
+    font-family: 'Lato', sans-serif;
+}
+
+/* Align the pagination buttons in the center of the container */
+.pagination {
+    text-align: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 10px;
+}
+
+.page-btn {
+    padding: 0.5rem 1rem;
+    background-color: #4CB944;
+    border: none;
     color: white;
+    font-family: 'Montserrat', sans-serif;
+    cursor: pointer;
+    margin: 0 0.5rem;
+    border-radius: 5px;
+}
+
+.page-btn:disabled {
+    background-color: #ddd;
+    cursor: not-allowed;
+}
+
+#current-page {
+    font-family: 'Montserrat', sans-serif;
+    margin: 0 1rem;
 }

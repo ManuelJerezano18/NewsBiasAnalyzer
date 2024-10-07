@@ -51,7 +51,27 @@
                 </div>
 
                 <div class="empty-area">
-                    <!-- Empty for now, can be used for future content -->
+                    <h2>History of Analyzed Articles</h2>
+                    <table class="article-history-table">
+                        <thead>
+                            <tr>
+                                <th>Name</th>
+                                <th>Website</th>
+                                <th>Date</th>
+                                <th>Bias Score</th>
+                            </tr>
+                        </thead>
+                        <tbody id="article-history-body">
+                            <!-- Placeholder for dynamically inserted rows -->
+                        </tbody>
+                    </table>
+                
+                    <!-- Pagination Controls -->
+                    <div class="pagination">
+                        <button class="page-btn" id="prev-page" disabled>Previous</button>
+                        <span id="current-page">Page 1</span>
+                        <button class="page-btn" id="next-page">Next</button>
+                    </div>
                 </div>
             </div>
         </div>
@@ -72,5 +92,6 @@
             <p>&copy; 2024 News Bias Check. All Rights Reserved.</p>
         </div>
     </footer>
+    <script type="module" src="js/profile.js"></script>
 </body>
 </html>
