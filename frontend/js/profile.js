@@ -47,7 +47,7 @@ window.addEventListener('load', () => {
     const table = document.querySelector('.article-history-table');
     
     // Get the computed height of the empty area minus some padding/margin
-    const availableHeight = emptyArea.clientHeight - 50;  // Adjust the 50px if needed for extra padding
+    const availableHeight = emptyArea.clientHeight - 200;  // this will need fixing later (to dynamic)
     
     // Estimate the height of a table row (this may vary depending on styling)
     const estimatedRowHeight = 45; // Rough estimate for the row height in pixels
@@ -68,6 +68,7 @@ window.addEventListener('load', () => {
         const end = start + rowsPerPage;
         const pageData = articleHistory.slice(start, end);
 
+        // Add actual rows to the table
         pageData.forEach(article => {
             const row = `
                 <tr>
@@ -79,6 +80,20 @@ window.addEventListener('load', () => {
             `;
             tbody.innerHTML += row;
         });
+
+        // Add empty rows if necessary to fill up the table
+        const emptyRowsToAdd = rowsPerPage - pageData.length;
+        for (let i = 0; i < emptyRowsToAdd; i++) {
+            const emptyRow = `
+                <tr>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                    <td>&nbsp;</td>
+                </tr>
+            `;
+            tbody.innerHTML += emptyRow;
+        }
 
         // Update pagination buttons
         document.getElementById('current-page').textContent = `Page ${page}`;
