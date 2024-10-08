@@ -567,3 +567,19 @@ footer {
     font-family: 'Montserrat', sans-serif;
     margin: 0 1rem;
 }
+
+canvas {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+.analysis-section{
+    margin-top: 120px;
+    margin-left:135px;
+    max-width: 1200px;
+}
+
+#sentimentChart{
+    max-width: 600px;
+    max-height: 600px;
+}
