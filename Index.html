@@ -5,6 +5,120 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Article Submission</title>
     <link rel="stylesheet" href="styles.css">
+    <!-- Firebase CDN Scripts -->
+    <script type="module">
+      import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
+      import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
+
+      const firebaseConfig = {
+        apiKey: "AIzaSyBnjBn6sTwnqDjrMXdgmFZ2dugrL5OVLTI",
+        authDomain: "news-bias-analyzer.firebaseapp.com",
+        projectId: "news-bias-analyzer",
+        storageBucket: "news-bias-analyzer.appspot.com",
+        messagingSenderId: "661563307465",
+        appId: "1:661563307465:web:648bdabecbcf57b0d96418",
+      };
+
+      const app = initializeApp(firebaseConfig);
+      const db = getFirestore(app);
+
+      const validDomains = [
+        'nytimes.com', 'bbc.com', 'cnn.com', 'theguardian.com',
+        'reuters.com', 'washingtonpost.com', 'forbes.com',
+        'bloomberg.com', 'aljazeera.com', 'npr.org', 'medium.com',
+        'hbr.org', 'wired.com', 'theatlantic.com', 'techcrunch.com',
+        'businessinsider.com', 'nationalgeographic.com', 'vox.com',
+        'economist.com', 'newyorker.com'
+      ];
+
+      // Function to validate if the URL is from a valid domain
+      function isValidDomain(url) {
+        try {
+          const domainPattern = /^https?:\/\/(?:[a-z0-9-]+\.)*([a-z0-9-]+\.[a-z]{2,6})(\/|$)/i;
+          const domainMatch = url.match(domainPattern);
+          if (domainMatch) {
+            const domain = domainMatch[1]; 
+            return validDomains.includes(domain);
+          }
+        } catch (error) {
+          console.error("Error validating domain:", error);
+        }
+        return false;
+      }
+
+      async function getBiasAnalysis(articleText) {
+        const apiKey = "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"; 
+        const apiUrl = "https://api-inference.huggingface.co/models/d4data/bias-detection-model";
+        
+        const headers = {
+          "Authorization": `Bearer ${apiKey}`,
+          "Content-Type": "application/json"
+        };
+
+        const body = {
+          inputs: articleText
+        };
+
+        try {
+          const response = await fetch(apiUrl, {
+            method: "POST",
+            headers: headers,
+            body: JSON.stringify(body)
+          });
+          
+          const result = await response.json();
+          console.log("Bias analysis result:", result);
+          return result;
+        } catch (error) {
+          console.error("Error in bias analysis API:", error);
+          return null;
+        }
+      }
+
+      document.getElementById('submitButton').addEventListener('click', async function(event) {
+        event.preventDefault();
+        const url = document.getElementById('url').value;
+        const errorMessage = document.getElementById('error-message');
+        const outputField = document.getElementById('output'); // Output field
+
+        if (!isValidDomain(url)) {
+          errorMessage.textContent = 'The article URL must be from a valid news source.';
+        } else {
+          errorMessage.textContent = '';
+          try {
+            
+            const articleText = "This is a sample article content for bias analysis."; 
+            const biasAnalysisResult = await getBiasAnalysis(articleText);
+
+            if (biasAnalysisResult) {
+             
+              if (biasAnalysisResult.error && biasAnalysisResult.error.includes("loading")) {
+                outputField.textContent = "The model is currently loading. Please try again in a few minutes.";
+              } else {
+               
+                const biasAnalysisString = JSON.stringify(biasAnalysisResult);
+
+                // Store the URL and bias analysis in Firebase
+                await addDoc(collection(db, "Articles"), {
+                  article_url: url,
+                  submission_date: new Date(),
+                  bias_analysis: biasAnalysisString  // Store as a string
+                });
+                alert('URL successfully submitted and bias analysis stored in Firebase!');
+
+                // Display result in the output field
+                outputField.textContent = biasAnalysisString;
+              }
+            } else {
+              alert('Failed to perform bias analysis. Please try again.');
+            }
+
+          } catch (error) {
+            console.error("Error adding document:", error);
+          }
+        }
+      });
+    </script>
 </head>
 <body>
     <h1>Submit an Article</h1>
@@ -15,80 +129,8 @@
         <button type="button" id="submitButton">Submit</button>
     </form>
 
-    <!-- Firebase and Form Logic -->
-    <script type="module">
-        // Firebase setup
-        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
-        import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
+    <h2>Bias Analysis Result:</h2>
+    <pre id="output"></pre>
 
-        const firebaseConfig = {
-            apiKey: "AIzaSyBnjBn6sTwnqDjrMXdgmFZ2dugrL5OVLTI",
-            authDomain: "news-bias-analyzer.firebaseapp.com",
-            projectId: "news-bias-analyzer",
-            storageBucket: "news-bias-analyzer.appspot.com",
-            messagingSenderId: "661563307465",
-            appId: "1:661563307465:web:648bdabecbcf57b0d96418"
-        };
-
-        const app = initializeApp(firebaseConfig);
-        const db = getFirestore(app);
-
-        // Valid news domains
-        const validDomains = [
-            'nytimes.com', 'bbc.com', 'cnn.com', 'theguardian.com', 'reuters.com',
-            'washingtonpost.com', 'forbes.com', 'bloomberg.com', 'aljazeera.com',
-            'npr.org', 'medium.com', 'hbr.org', 'wired.com', 'theatlantic.com',
-            'techcrunch.com', 'businessinsider.com', 'nationalgeographic.com',
-            'vox.com', 'economist.com', 'newyorker.com'
-        ];
-
-        // URL Validation
-        function isValidUrl(urlString) {
-            try {
-                let url = new URL(urlString);
-                return true;
-            } catch (_) {
-                return false;
-            }
-        }
-
-        function isNewsSource(urlString) {
-            let url = new URL(urlString);
-            let domain = url.hostname.replace('www.', '').toLowerCase();
-            return validDomains.includes(domain);
-        }
-
-        // Submit button event listener
-        document.getElementById("submitButton").addEventListener("click", async function (event) {
-            event.preventDefault();
-            const url = document.getElementById("url").value;
-            const errorMessage = document.getElementById("error-message");
-
-            // Validate URL format
-            if (!isValidUrl(url)) {
-                errorMessage.textContent = "Invalid URL format.";
-                return;
-            }
-
-            // Validate news source
-            if (!isNewsSource(url)) {
-                errorMessage.textContent = "Not a recognized news source.";
-                return;
-            }
-
-            errorMessage.textContent = ""; // Clear any error messages
-
-            try {
-                // Store valid URL in Firebase
-                await addDoc(collection(db, "Articles"), {
-                    article_url: url,
-                    submission_date: new Date()
-                });
-                alert('URL successfully submitted and stored in Firebase!');
-            } catch (error) {
-                console.error("Error adding document:", error);
-            }
-        });
-    </script>
 </body>
 </html>
