@@ -178,48 +178,71 @@ body {
     align-items: center;
 }
 
+/* Styling the input field and its container */
 .url-upload {
     display: flex;
     align-items: center;
-    background: #E5E5E5; /* Soft Stone Gray */
+    background: #FFF; /* White background for input */
     padding: 0.8rem;
-    border-radius: 5px;
+    border-radius: 50px; /* Full-rounded edges */
     width: 100%;
-    max-width: 600px;
+    max-width: 400px; /* Adjusted width */
+    max-height: 50px;
     margin-bottom: 1rem;
+    border: 1px solid #ccc;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Add subtle shadow */
 }
 
+/* Icon inside the input */
 .url-upload i {
     margin-right: 10px;
     font-size: 1.5rem;
-    color: #333;
+    color: #aaa; /* Lighter icon color */
 }
 
-.url-upload textarea {
-    width: 100%;
-    height: 100px;
+/* The input field */
+.url-upload input {
+    width: 100%; /* Ensures the input takes up the entire width */
+    height: 50px; /* Adjust height as needed */
     padding: 0.5rem;
-    border: none;
-    background: transparent;
+    border: none; /* Remove the border */
     font-family: 'Lato', sans-serif;
     font-size: 1rem;
-    resize: none;
-    outline: none;
+    border-radius: 50px; /* Ensure smooth rounded corners */
+    outline: none; /* Removes the outline when clicking */
+    background: transparent;
+    resize: none; /* Disable resizing */
+    box-sizing: border-box; /* Ensures padding is included in the element's total width and height */
 }
 
+/* Error message styling */
+.error-message {
+    color: #E74C3C; /* Red color for error message */
+    font-size: 0.9rem;
+    margin-top: 0.5rem;
+    text-align: left;
+    width: 100%;
+    max-width: 400px;
+}
+
+/* Submit Button */
 .btn-submit {
     background: #4CB944; /* Dark Pastel Green */
-    color: #F7F5FB; /* Ghost White */
+    color: #FFF;
     padding: 0.75rem 2rem;
-    border-radius: 2vmin;
+    border-radius: 50px; /* Full-rounded button */
     border: none;
     cursor: pointer;
     font-family: 'Lato', sans-serif;
+    font-size: 1.1rem;
+    margin-top: 1rem;
 }
 
 .btn-submit:hover {
     background-color: #3CA935; /* Slightly darker green on hover */
 }
+
+
 
 /* Testimonials Section */
 .testimonials-section {
@@ -582,4 +605,44 @@ canvas {
 #sentimentChart{
     max-width: 600px;
     max-height: 600px;
+}
+
+/* Custom styling for loading animation */
+.loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+    background-color: #F7F5FB; /* Light background consistent with other pages */
+}
+
+.loading-content {
+    font-family: 'Montserrat', sans-serif;
+    color: #25171A; /* Licorice */
+}
+
+.loading-icon {
+    font-size: 5rem;
+    margin-bottom: 1.5rem;
+    color: #4CB944; /* Dark Pastel Green */
+    animation: spin 1.5s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.loading-message {
+    font-size: 1.5rem;
+}
+
+.loading-subtext {
+    font-size: 1rem;
+    color: #556C89; /* Slate Blue for subtle subtext */
 }

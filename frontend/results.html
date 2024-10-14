@@ -30,6 +30,10 @@
         </div>
     </header>
 
+    <div id="result-container">
+        <!-- Analysis result will be displayed here -->
+        <pre id="analysis-result"></pre>
+    </div>
     <section class="analysis-section">
         <div class="container">
             <h2>Analysis Results: The Future of Artificial Intelligence</h2>
@@ -86,6 +90,19 @@
             <p>&copy; 2024 News Bias Check. All Rights Reserved.</p>
         </div>
     </footer>
+    <script>
+        // Retrieve the analysis result from localStorage
+        const biasAnalysisResult = localStorage.getItem('biasAnalysisResult');
+        
+        // Display the result in the preformatted tag
+        document.getElementById('analysis-result').textContent = biasAnalysisResult 
+            ? biasAnalysisResult 
+            : 'No analysis result found.';
+
+        // Optionally, clear the stored result after displaying it
+        localStorage.removeItem('biasAnalysisResult');
+    </script>
+
 
     <script>
         // Sentiment Analysis Chart

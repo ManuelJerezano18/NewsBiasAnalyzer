@@ -100,5 +100,10 @@
             <p>&copy; 2024 News Bias Check. All Rights Reserved.</p>
         </div>
     </footer>
+    <script>
+        // Retrieve the error message from localStorage and display it
+        const errorMessage = localStorage.getItem('errorMessage');
+        document.getElementById('error-message').textContent = errorMessage || 'An unknown error occurred.';
+    </script>
 </body>
 </html>

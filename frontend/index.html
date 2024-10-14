@@ -79,7 +79,20 @@
                 </div>
             </div>
         </section>
-        
+
+        <!-- Loading Section -->
+        <div id="loading" style="display: none;">
+            <div class="loading-container">
+                <div class="loading-content">
+                    <i class="fas fa-cog loading-icon"></i> <!-- Spinning gear icon -->
+                    <div class="loading-message">Analyzing your article...</div>
+                    <div class="loading-subtext">This may take a few moments. Please wait while we process the data.</div>
+                </div>
+            </div>
+        </div>
+
+
+
         <!-- Submit Article Section -->
         <section id="submit" class="full-width-section submit-article" style="background-color: #F7F5FB;">
             <div class="container">
@@ -87,9 +100,9 @@
                 <form id="articleForm" action="#" method="post">
                     <div class="url-upload">
                         <i class="fas fa-upload"></i>
-                        <textarea id="url" placeholder="Paste the article URL or text here..." required></textarea>
-                        <div id="error-message" style="color:red;"></div> <!-- Error message placeholder -->
+                        <input type="url" placeholder="Paste the article URL or text here..." required>
                     </div>
+                    <div id="error-message" style="color:red;"></div> <!-- Error message placeholder -->
                     <button id="submitButton" type="submit" class="btn-submit">Submit Article For Analysis</button>
                 </form>
             </div>
