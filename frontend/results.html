@@ -30,50 +30,19 @@
         </div>
     </header>
 
-    <div id="result-container">
-        <!-- Analysis result will be displayed here -->
-        <pre id="analysis-result"></pre>
-    </div>
+    
     <section class="analysis-section">
-        <div class="container">
-            <h2>Analysis Results: The Future of Artificial Intelligence</h2>
-            <p>This article discusses the evolving role of artificial intelligence in different sectors, including healthcare, finance, and the job market. Below is a detailed analysis of its content, bias detection, and political orientation.</p>
 
-            <!-- Graphs Section -->
-            <div class="graphs">
-                <h3>Sentiment Analysis</h3>
-                <canvas id="sentimentChart" width="200" height="200"></canvas>
-                <p>This graph displays the sentiment distribution of the article, indicating whether the tone of the text is positive, negative, or neutral.</p>
+            <!-- Container for the article chunks and their corresponding analysis -->
+            <div id="article-container">
+                <!-- Article chunks will be displayed here -->
+            </div>
+            <div id="analysis-container">
+                <!-- Analysis results will be displayed here -->
             </div>
 
-            <div class="graphs">
-                <h3>Topic Distribution</h3>
-                <canvas id="topicChart"></canvas>
-                <p>The article primarily focuses on technological advancements and their impact on different industries, especially job automation, healthcare, and policy-making.</p>
-            </div>
-
-            <!-- Keywords Section -->
-            <div class="keywords">
-                <h3>Keywords</h3>
-                <p>The top keywords extracted from the article are:</p>
-                <ul>
-                    <li>Artificial Intelligence</li>
-                    <li>Healthcare</li>
-                    <li>Automation</li>
-                    <li>Job Market</li>
-                    <li>Machine Learning</li>
-                </ul>
-            </div>
-
-            <!-- Political Spectrum Graph -->
-            <div class="political-spectrum">
-                <h3>Political Spectrum Analysis</h3>
-                <canvas id="politicalSpectrumChart"></canvas>
-                <p>This graph displays where the article falls on the political spectrum based on language, sentiment, and ideology patterns detected in the text.</p>
-            </div>
-
-        </div>
     </section>
+    
 
     <!-- Footer -->
     <footer>
@@ -90,20 +59,9 @@
             <p>&copy; 2024 News Bias Check. All Rights Reserved.</p>
         </div>
     </footer>
-    <script>
-        // Retrieve the analysis result from localStorage
-        const biasAnalysisResult = localStorage.getItem('biasAnalysisResult');
-        
-        // Display the result in the preformatted tag
-        document.getElementById('analysis-result').textContent = biasAnalysisResult 
-            ? biasAnalysisResult 
-            : 'No analysis result found.';
 
-        // Optionally, clear the stored result after displaying it
-        localStorage.removeItem('biasAnalysisResult');
-    </script>
-
-
+    <!----
+    
     <script>
         // Sentiment Analysis Chart
         const sentimentCtx = document.getElementById('sentimentChart').getContext('2d');
@@ -118,7 +76,7 @@
                 }]
             }
         });
-
+        
         // Topic Distribution Chart
         const topicCtx = document.getElementById('topicChart').getContext('2d');
         const topicChart = new Chart(topicCtx, {
@@ -132,7 +90,7 @@
                 }]
             }
         });
-
+        
         // Political Spectrum Chart
         const politicalSpectrumCtx = document.getElementById('politicalSpectrumChart').getContext('2d');
         const politicalSpectrumChart = new Chart(politicalSpectrumCtx, {
@@ -148,6 +106,7 @@
             }
         });
     </script>
-
+    -->
+    <script type="module" src="js/results.js"></script>
 </body>
 </html>

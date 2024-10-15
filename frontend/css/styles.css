@@ -646,3 +646,41 @@ canvas {
     font-size: 1rem;
     color: #556C89; /* Slate Blue for subtle subtext */
 }
+
+
+.chunk-wrapper {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 1rem;
+    padding: 10px;
+    border: 1px solid #e1e1e1;
+    border-radius: 5px;
+}
+
+.chunk-brace {
+    font-size: 2rem;
+    color: #333;
+    margin-right: 1rem;
+}
+
+.chunk-text {
+    width: 70%;
+    text-align: left;
+    line-height: 1.5;
+    font-family: 'Lato', sans-serif;
+}
+
+.bias-analysis {
+    text-align: right;
+    width: 30%;
+    color: #333;
+}
+
+.biased {
+    color: red;
+}
+
+.non-biased {
+    color: green;
+}
