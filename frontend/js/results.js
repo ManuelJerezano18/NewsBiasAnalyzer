@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
     // Retrieve data from localStorage
     const articleText = localStorage.getItem('articleText');
     const biasAnalysis = JSON.parse(localStorage.getItem('biasAnalysisResult'));
-    
+
     if (articleText && biasAnalysis) {
         const windowSize = 500;  // Same window size used in the API
         const overlap = 50;
@@ -13,7 +13,15 @@ document.addEventListener('DOMContentLoaded', function() {
 
         // Create chunks based on the window size and overlap used in analysis
         while (start < articleText.length) {
-            const chunk = articleText.slice(start, start + windowSize).trim();
+            let chunk;
+
+            // For the first chunk, take the full window size, and for subsequent chunks,
+            // remove the first "window" characters from the previous chunk.
+            if (start === 0) {
+                chunk = articleText.slice(start, start + windowSize).trim();
+            } else {
+                chunk = articleText.slice(start + overlap, start + windowSize).trim();
+            }
 
             // Calculate the index in biasAnalysis based on the chunk position
             const biasResultIndex = Math.floor(start / (windowSize - overlap));
