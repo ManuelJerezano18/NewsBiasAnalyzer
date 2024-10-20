@@ -8,8 +8,10 @@
     <!-- Firebase CDN Scripts -->
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
-      import { getFirestore, collection, addDoc } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
+      import { getFirestore, collection, addDoc, doc, setDoc } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
+      import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js";
 
+      // Firebase configuration
       const firebaseConfig = {
         apiKey: "AIzaSyBnjBn6sTwnqDjrMXdgmFZ2dugrL5OVLTI",
         authDomain: "news-bias-analyzer.firebaseapp.com",
@@ -21,6 +23,7 @@
 
       const app = initializeApp(firebaseConfig);
       const db = getFirestore(app);
+      const auth = getAuth(app);
 
       const validDomains = [
         'nytimes.com', 'bbc.com', 'cnn.com', 'theguardian.com',
@@ -75,62 +78,96 @@
         }
       }
 
-      document.getElementById('submitButton').addEventListener('click', async function(event) {
-        event.preventDefault();
-        const url = document.getElementById('url').value;
-        const errorMessage = document.getElementById('error-message');
-        const outputField = document.getElementById('output'); // Output field
+      // Ensure user is authenticated before allowing article submission
+      onAuthStateChanged(auth, (user) => {
+        if (user) {
+          // Logged in user, proceed with article submission
+          document.getElementById('submitButton').addEventListener('click', async function(event) {
+            event.preventDefault();
+            const url = document.getElementById('url').value;
+            const errorMessage = document.getElementById('error-message');
+            const outputField = document.getElementById('output'); // Output field
 
-        if (!isValidDomain(url)) {
-          errorMessage.textContent = 'The article URL must be from a valid news source.';
-        } else {
-          errorMessage.textContent = '';
-          try {
-            
-            const articleText = "This is a sample article content for bias analysis."; 
-            const biasAnalysisResult = await getBiasAnalysis(articleText);
-
-            if (biasAnalysisResult) {
-             
-              if (biasAnalysisResult.error && biasAnalysisResult.error.includes("loading")) {
-                outputField.textContent = "The model is currently loading. Please try again in a few minutes.";
-              } else {
-               
-                const biasAnalysisString = JSON.stringify(biasAnalysisResult);
-
-                // Store the URL and bias analysis in Firebase
-                await addDoc(collection(db, "Articles"), {
-                  article_url: url,
-                  submission_date: new Date(),
-                  bias_analysis: biasAnalysisString  // Store as a string
-                });
-                alert('URL successfully submitted and bias analysis stored in Firebase!');
-
-                // Display result in the output field
-                outputField.textContent = biasAnalysisString;
-              }
+            if (!isValidDomain(url)) {
+              errorMessage.textContent = 'The article URL must be from a valid news source.';
             } else {
-              alert('Failed to perform bias analysis. Please try again.');
-            }
+              errorMessage.textContent = '';
+              try {
+                const articleText = "This is a sample article content for bias analysis."; 
+                const biasAnalysisResult = await getBiasAnalysis(articleText);
 
-          } catch (error) {
-            console.error("Error adding document:", error);
-          }
+                if (biasAnalysisResult) {
+                  if (biasAnalysisResult.error && biasAnalysisResult.error.includes("loading")) {
+                    outputField.textContent = "The model is currently loading. Please try again in a few minutes.";
+                  } else {
+                    const biasAnalysisString = JSON.stringify(biasAnalysisResult);
+
+                    // Store the URL and bias analysis in the general "Articles" collection
+                    await addDoc(collection(db, "Articles"), {
+                      article_url: url,
+                      submission_date: new Date(),
+                      bias_analysis: biasAnalysisString  // Store as a string
+                    });
+
+                    // Also store the article in the user's own collection
+                    const userArticlesRef = collection(db, `Users/${user.uid}/Articles`);
+                    await addDoc(userArticlesRef, {
+                      article_url: url,
+                      submission_date: new Date(),
+                      bias_analysis: biasAnalysisString  // Store as a string
+                    });
+
+                    alert('URL successfully submitted and bias analysis stored in Firebase!');
+
+                    // Display result in the output field
+                    outputField.textContent = biasAnalysisString;
+                  }
+                } else {
+                  alert('Failed to perform bias analysis. Please try again.');
+                }
+
+              } catch (error) {
+                console.error("Error adding document:", error);
+              }
+            }
+          });
+        } else {
+          // If not authenticated, redirect to sign-in page
+          window.location.href = 'signin.html';
         }
+      });
+
+      // Sign out functionality
+      document.getElementById('signOutButton').addEventListener('click', () => {
+        signOut(auth).then(() => {
+          alert('Signed out successfully!');
+          window.location.href = 'signin.html'; // Redirect to sign-in page
+        }).catch((error) => {
+          console.error('Error during sign-out:', error.message);
+        });
       });
     </script>
 </head>
 <body>
+    <!-- Sign Out button at the top right -->
+    <div class="top-right">
+        <button id="signOutButton">Sign Out</button>
+    </div>
+
     <h1>Submit an Article</h1>
-    <form id="articleForm">
-        <label for="url">Article URL:</label>
-        <input type="text" id="url" name="url" placeholder="Enter article URL" required>
-        <span id="error-message" class="error"></span>
-        <button type="button" id="submitButton">Submit</button>
-    </form>
+    <div class="submission-container">
+      <form id="articleForm">
+          <label for="url">Article URL:</label>
+          <input type="text" id="url" name="url" placeholder="Enter article URL" required>
+          <span id="error-message" class="error"></span>
+          <button type="button" id="submitButton">Submit</button>
+      </form>
+    </div>
 
     <h2>Bias Analysis Result:</h2>
-    <pre id="output"></pre>
+    <div class="result-container">
+        <pre id="output"></pre>
+    </div>
 
 </body>
 </html>
