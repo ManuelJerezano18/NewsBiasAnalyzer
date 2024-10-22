@@ -162,7 +162,7 @@ export function handleFormSubmission() {
             const url = urlField.value;
 
             const domainStatus = isValidDomain(url);
-
+            
             if (domainStatus === 1) {
                 errorMessage.textContent = 'The URL format is invalid. Please enter a correct URL.';
             } else if (domainStatus === 2) {
