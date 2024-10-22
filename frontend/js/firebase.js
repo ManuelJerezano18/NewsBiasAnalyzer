@@ -20,3 +20,7 @@ export function initializeFirebase() {
 export function getDb() {
   return db;
 }
+
+export function getAuthInstance() {
+  return auth;
+}

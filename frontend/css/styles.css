@@ -14,6 +14,10 @@ body {
     line-height: 1.6;
     color: #25171A; /* Licorice */
     background-color: #F7F5FB; /* Ghost White */
+    height: 100%;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
 }
 
 .container {
@@ -298,15 +302,6 @@ body {
     background-color: #3CA935; /* Slightly darker green on hover */
 }
 
-/* Footer Section */
-footer {
-    background: #020122; /* Oxford Blue */
-    color: #F7F5FB; /* Ghost White */
-    padding: 1.5rem 0;
-    margin-top: 2rem;
-    text-align: center;
-}
-
 .footer-links {
     display: flex;
     justify-content: center;
@@ -404,12 +399,6 @@ header {
     z-index: 1000;
 }
 
-/* Ensure content below header is not clipped */
-body, html {
-    height: 100%;
-    margin: 0;
-    padding: 0;
-}
 
 .home-content {
     padding-top: 6rem; /* Adjust this value as needed */
@@ -688,4 +677,24 @@ canvas {
 
 .non-biased {
     color: green;
+}
+
+
+
+.analysis-section {
+    flex: 1;
+}
+
+/* Styling the sign out icon */
+.icon-signout {
+    color: white;
+    font-size: 1rem;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    transition: color 0.3s ease;
+}
+
+.icon-signout:hover {
+    color: #ccc; /* Light gray on hover */
 }

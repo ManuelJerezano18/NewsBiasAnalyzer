@@ -113,39 +113,6 @@ async function getBiasAnalysisWithSlidingWindow(articleText, windowSize = 500, o
     return results;
 }
 
-
-
-
-
-
-// Function to call Hugging Face bias analysis API
-async function getBiasAnalysis(articleText) {
-    const apiKey = "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"; 
-    const apiUrl = "https://api-inference.huggingface.co/models/d4data/bias-detection-model";
-
-    const headers = {
-        "Authorization": `Bearer ${apiKey}`,
-        "Content-Type": "application/json"
-    };
-
-    const body = { inputs: articleText };
-
-    try {
-        const response = await fetch(apiUrl, {
-            method: "POST",
-            headers: headers,
-            body: JSON.stringify(body)
-        });
-
-        const result = await response.json();
-        console.log("Bias analysis result:", result);
-        return result;
-    } catch (error) {
-        console.error("Error in bias analysis API:", error);
-        return null;
-    }
-}
-
 export function handleFormSubmission() {
     document.addEventListener('DOMContentLoaded', function() {
         const submitButton = document.getElementById('submitButton');
@@ -162,7 +129,7 @@ export function handleFormSubmission() {
             const url = urlField.value;
 
             const domainStatus = isValidDomain(url);
-
+            
             if (domainStatus === 1) {
                 errorMessage.textContent = 'The URL format is invalid. Please enter a correct URL.';
             } else if (domainStatus === 2) {

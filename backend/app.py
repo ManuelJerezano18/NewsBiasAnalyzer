@@ -28,7 +28,8 @@ def scrape_article():
             'text': article.text,
             'top_image': article.top_image,
             'keywords': article.keywords,
-            'summary': article.summary
+            'summary': article.summary,
+            'title': article.title
         }
         return jsonify(article_info), 200
 
