@@ -1,5 +1,6 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
 import { getFirestore } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
+import { getAuth } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js";
 
 const firebaseConfig = {
   apiKey: "AIzaSyBnjBn6sTwnqDjrMXdgmFZ2dugrL5OVLTI",
@@ -11,12 +12,21 @@ const firebaseConfig = {
 };
 
 let db;
+let auth;
 
 export function initializeFirebase() {
   const app = initializeApp(firebaseConfig);
   db = getFirestore(app);
+  auth = getAuth(app);  // Initialize auth
 }
 
 export function getDb() {
   return db;
 }
+<<<<<<< Updated upstream
+=======
+
+export function getAuthInstance() {
+  return auth;  // Expose auth instance
+}
+>>>>>>> Stashed changes
