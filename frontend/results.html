@@ -30,19 +30,27 @@
         </div>
     </header>
 
-    
     <section class="analysis-section">
+        <!-- Toggle Button for Model Switching -->
+        <div class="model-toggle">
+            <button id="toggleModelButton">Switch to GPT-4 Mini</button>
+        </div>
 
-            <!-- Container for the article chunks and their corresponding analysis -->
-            <div id="article-container">
-                <!-- Article chunks will be displayed here -->
-            </div>
-            <div id="analysis-container">
-                <!-- Analysis results will be displayed here -->
-            </div>
+        <!-- Container for the article chunks and their corresponding analysis -->
+        <div id="article-container">
+            <!-- Article chunks will be displayed here -->
+        </div>
+        <div id="analysis-container">
+            <!-- Analysis results will be displayed here -->
+        </div>
 
+        <!-- Canvas elements for the additional charts -->
+        <div class="chart-section">
+            <canvas id="sentimentChart" width="400" height="400"></canvas>
+            <canvas id="topicChart" width="400" height="400"></canvas>
+            <canvas id="politicalSpectrumChart" width="400" height="400"></canvas>
+        </div>
     </section>
-    
 
     <!-- Footer -->
     <footer>
@@ -60,53 +68,6 @@
         </div>
     </footer>
 
-    <!----
-    
-    <script>
-        // Sentiment Analysis Chart
-        const sentimentCtx = document.getElementById('sentimentChart').getContext('2d');
-        const sentimentChart = new Chart(sentimentCtx, {
-            type: 'pie',
-            data: {
-                labels: ['Positive', 'Negative', 'Neutral'],
-                datasets: [{
-                    label: 'Sentiment Distribution',
-                    data: [45, 30, 25], // Example values
-                    backgroundColor: ['#4CB944', '#FF595E', '#FFCA3A']
-                }]
-            }
-        });
-        
-        // Topic Distribution Chart
-        const topicCtx = document.getElementById('topicChart').getContext('2d');
-        const topicChart = new Chart(topicCtx, {
-            type: 'bar',
-            data: {
-                labels: ['Technology', 'Healthcare', 'Policy', 'Finance', 'Automation'],
-                datasets: [{
-                    label: 'Topic Distribution',
-                    data: [35, 25, 20, 10, 10], // Example values
-                    backgroundColor: ['#4CB944', '#FFCA3A', '#1982C4', '#6A4C93', '#FF595E']
-                }]
-            }
-        });
-        
-        // Political Spectrum Chart
-        const politicalSpectrumCtx = document.getElementById('politicalSpectrumChart').getContext('2d');
-        const politicalSpectrumChart = new Chart(politicalSpectrumCtx, {
-            type: 'radar',
-            data: {
-                labels: ['Left', 'Center-Left', 'Center', 'Center-Right', 'Right'],
-                datasets: [{
-                    label: 'Political Orientation',
-                    data: [0.2, 0.3, 0.5, 0.1, 0], // Example values
-                    backgroundColor: 'rgba(72, 61, 139, 0.3)',
-                    borderColor: '#4CB944'
-                }]
-            }
-        });
-    </script>
-    -->
     <script type="module" src="js/results.js"></script>
 </body>
 </html>

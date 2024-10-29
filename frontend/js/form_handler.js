@@ -146,6 +146,51 @@ async function getBiasAnalysis(articleText) {
     }
 }
 
+async function analyzeWithMultipleModels(articleText) {
+    const models = [
+        { name: 'GPT4-mini', analyzeFunc: analyzeWithGPT4Mini },
+        { name: 'Gemini', analyzeFunc: analyzeWithGemini },
+        // Add other models here as needed
+    ];
+
+    const analysisResults = {};
+
+    // Loop through each model and get analysis results
+    for (const model of models) {
+        try {
+            const result = await model.analyzeFunc(articleText);
+            analysisResults[model.name] = result;
+        } catch (error) {
+            console.error(`Error analyzing with ${model.name}:`, error);
+            analysisResults[model.name] = { error: `Failed to analyze with ${model.name}` };
+        }
+    }
+
+    return analysisResults;
+}
+
+
+async function analyzeWithGPT4Mini(articleText) {
+    try {
+        const response = await openai.createChatCompletion({
+            model: "gpt-4o-mini", // Adjust this if there is a specific variant of GPT-4 Mini you are using
+            messages: [
+                { role: "system", content: "You are an advanced text analyst with a keen understanding of media bias and rhetoric. You have spent the last 15 years developing algorithms and methodologies to evaluate the objectivity of news articles across various genres and formats. Your expertise allows you to dissect language, tone, and framing techniques to deliver reliable bias assessments.Your task is to analyze a provided news article for bias. Please consider the specific language used, the framing of facts, the presence of subjective opinions, and the overall tone of the article in your analysis. You will be given the details of the article you need to evaluate. While analyzing, please keep in mind the following criteria: identify any emotionally charged language, potential omissions of important facts, the balance of perspectives presented, and any other indicators of bias. Finally, provide only the percentage of bias that accurately reflects your assessment." },
+                { role: "user", content: `Analyze the following article for political or ideological bias:\n\n${articleText}` }
+            ],
+            max_tokens: 100  // Set a max token limit to manage output size (adjust as needed)
+        });
+
+        const result = response.data.choices[0].message.content;
+        console.log("GPT-4 Mini analysis result:", result);
+        return result;
+    } catch (error) {
+        console.error("Error in GPT-4 Mini API:", error);
+        return { error: "Failed to analyze with GPT-4 Mini" };
+    }
+}
+
+
 export function handleFormSubmission() {
     document.addEventListener('DOMContentLoaded', function() {
         const submitButton = document.getElementById('submitButton');
@@ -183,35 +228,59 @@ export function handleFormSubmission() {
 
                     // Store article text in localStorage for retrieval on results.html
                     localStorage.setItem('articleText', articleText);
-                    
-                    await new Promise(r => setTimeout(r, 5000));
 
-                    const biasAnalysisResult = await getBiasAnalysisWithSlidingWindow(articleText);
+                    // Pass the articleText to the new analysis function
+                    const analysisResults = await getBiasAnalysisWithSlidingWindow(articleText);
+
+                    const gptAnalysisResponse = await fetch('http://127.0.0.1:5000/analyze_bias_gpt4mini', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ text: articleText })
+                    });
                     
-                    if (biasAnalysisResult) {
-                        const biasAnalysisString = JSON.stringify(biasAnalysisResult);
+                    if (!gptAnalysisResponse.ok) {
+                        await new Promise(r => setTimeout(r, 5000));
+                        console.log("fail gpt4mini");
+                        throw new Error("Analysis failed");
+                    }
+                    
+                    // Read as text first, then parse if needed
+                    const responseText = await gptAnalysisResponse.text();
+                    const gptAnalysisResults = { analysisText: responseText };
+                    console.log("Raw response text:", responseText);
+                   
+
+
+                    localStorage.setItem('gptAnalysisResults', responseText);
+                    await new Promise(r => setTimeout(r, 15000));
+                    
+                    //const gptAnalysisResults = await analyzeWithMultipleModels(articleText);
+                    //console.log(gptAnalysisResults)
+                    if (analysisResults) {
+                        const analysisResultsString = JSON.stringify(analysisResults);
 
                         const db = getDb();
                         await addDoc(collection(db, "Articles"), {
                             article_url: url,
                             submission_date: new Date(),
-                            bias_analysis: biasAnalysisString
+                            analysis_results: analysisResultsString
                         });
 
-                        // Store the bias analysis result in localStorage before redirecting
-                        localStorage.setItem('biasAnalysisResult', biasAnalysisString);
-                        
+                        // Store the analysis results in localStorage before redirecting
+                        localStorage.setItem('biasAnalysisResults', analysisResultsString);
                         // Redirect to results page
+                        
                         window.location.href = 'results.html';
                     } else {
                         localStorage.setItem('errorMessage', 'Failed to perform bias analysis. Please try again.');
                         window.location.href = 'error.html';
                     }
                 } catch (error) {
-                    localStorage.setItem('errorMessage', 'An error occurred while submitting the article. Please try again.');
+                    localStorage.setItem('errorMessage', `An error occurred: ${error.message}`);
                     window.location.href = 'error.html';
                 }
             }
         });
     });
 }
+
