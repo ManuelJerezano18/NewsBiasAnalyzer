@@ -5,29 +5,49 @@ document.addEventListener('DOMContentLoaded', function() {
     const articleText = localStorage.getItem('articleText');
     const hfBiasAnalysis = JSON.parse(localStorage.getItem('biasAnalysisResult'));
     const gptAnalysisResults = localStorage.getItem('gptAnalysisResults'); // Stored as plain text
-
+    const geminiAnalysisResults = localStorage.getItem('geminiAnalysisResults'); // Stored as plain text
     let currentModel = 'huggingface';
 
+    const analysisDiv = document.createElement('div');
+    analysisDiv.className = 'analysis-div';
+
     toggleButton.addEventListener('click', () => {
-        currentModel = currentModel === 'huggingface' ? 'gpt4mini' : 'huggingface';
-        toggleButton.textContent = currentModel === 'huggingface' ? 'Switch to GPT-4 Mini' : 'Switch to Hugging Face';
-        renderAnalysis();
+        // Cycle through the models in sequence
+        if (currentModel === 'huggingface') {
+            currentModel = 'gpt4mini';
+            toggleButton.textContent = 'Switch to Gemini Flash';
+        } else if (currentModel === 'gpt4mini') {
+            currentModel = 'gemini';
+            toggleButton.textContent = 'Switch to Hugging Face';
+        } else {
+            currentModel = 'huggingface';
+            toggleButton.textContent = 'Switch to GPT-4 Mini';
+        }
+        
+        renderAnalysis();  // Re-render analysis based on the selected model
     });
 
     function renderAnalysis() {
-        articleContainer.innerHTML = '';  // Clear previous content
-
         if (currentModel === 'huggingface') {
-            renderHuggingFaceAnalysis();
-        } else {
-            renderGpt4MiniAnalysis();
+            analysisDiv.style.display = 'none';
+            // Call the function to display Hugging Face analysis
+            displayHuggingFaceAnalysis();
+        } else if (currentModel === 'gpt4mini') {
+            analysisDiv.style.display = 'block';
+            // Call the function to display GPT-4 Mini analysis
+            displayGPT4MiniAnalysis();
+        } else if (currentModel === 'gemini') {
+            analysisDiv.style.display = 'block';
+            // Call the function to display Gemini Flash analysis
+            displayGeminiFlashAnalysis();
         }
     }
 
-    function renderHuggingFaceAnalysis() {
+    function displayHuggingFaceAnalysis() {
         const windowSize = 500;
         const overlap = 50;
         let start = 0;
+        
 
         while (start < articleText.length) {
             let chunk = articleText.slice(start, start + windowSize).trim();
@@ -60,9 +80,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
             start += windowSize - overlap;
         }
+        analysisDiv.textContent = `Gemini Bias Analysis: ${geminiAnalysisResults}`;
     }
 
-    function renderGpt4MiniAnalysis() {
+    function displayGPT4MiniAnalysis() {
         articleContainer.textContent = '';
         const articleWrapper = document.createElement('div');
         articleWrapper.className = 'article-wrapper';
@@ -71,9 +92,23 @@ document.addEventListener('DOMContentLoaded', function() {
         articleDiv.className = 'article-text';
         articleDiv.textContent = articleText;
 
-        const analysisDiv = document.createElement('div');
-        analysisDiv.className = 'gpt4mini-analysis';
         analysisDiv.textContent = `GPT-4 Mini Bias Analysis: ${gptAnalysisResults}`;
+
+        articleWrapper.appendChild(articleDiv);
+        articleWrapper.appendChild(analysisDiv);
+        articleContainer.appendChild(articleWrapper);
+    }
+
+    function displayGeminiFlashAnalysis() {
+        articleContainer.textContent = '';
+        const articleWrapper = document.createElement('div');
+        articleWrapper.className = 'article-wrapper';
+
+        const articleDiv = document.createElement('div');
+        articleDiv.className = 'article-text';
+        articleDiv.textContent = articleText;
+
+        analysisDiv.textContent = `Gemini Bias Analysis: ${geminiAnalysisResults}`;
 
         articleWrapper.appendChild(articleDiv);
         articleWrapper.appendChild(analysisDiv);

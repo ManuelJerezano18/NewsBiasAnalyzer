@@ -62,3 +62,5 @@ coverage.xml
 .DS_Store
 
 backend/scraping/nltk_data
+
+.env

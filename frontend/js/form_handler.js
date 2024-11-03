@@ -248,10 +248,29 @@ export function handleFormSubmission() {
                     const responseText = await gptAnalysisResponse.text();
                     const gptAnalysisResults = { analysisText: responseText };
                     console.log("Raw response text:", responseText);
-                   
 
 
-                    localStorage.setItem('gptAnalysisResults', responseText);
+                    const geminiAnalysisResponse = await fetch('http://127.0.0.1:5000/analyze_bias_gemini', {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify({ text: articleText })
+                    });
+                    
+                    if (!geminiAnalysisResponse.ok) {
+                        await new Promise(r => setTimeout(r, 5000));
+                        console.log("fail gemini");
+                        throw new Error("Analysis failed");
+                    }
+                    
+                    // Read as text first, then parse if needed
+                    const geminiResponseText = await geminiAnalysisResponse.text();
+                    const geminiAnalysisResults = { analysisText: geminiResponseText };
+                    console.log("Raw response text gemini:", geminiResponseText);
+                    await new Promise(r => setTimeout(r, 15000));
+
+
+                    localStorage.setItem('geminiAnalysisResults', responseText);
+                    localStorage.setItem('gptAnalysisResults', geminiResponseText);
                     await new Promise(r => setTimeout(r, 15000));
                     
                     //const gptAnalysisResults = await analyzeWithMultipleModels(articleText);
