@@ -39,7 +39,7 @@ function isValidDomain(url) {
 // Function to call the backend scraping API (Flask)
 async function callScrapingAPI(url) {
     try {
-        const response = await fetch('http://127.0.0.1:5000/scrape', {
+        const response = await fetch('http://54.204.64.162:5000/scrape', {
             method: 'POST',
             headers: {
                 'Content-Type': 'application/json',
@@ -232,7 +232,7 @@ export function handleFormSubmission() {
                     // Pass the articleText to the new analysis function
                     const analysisResults = await getBiasAnalysisWithSlidingWindow(articleText);
 
-                    const gptAnalysisResponse = await fetch('http://127.0.0.1:5000/analyze_bias_gpt4mini', {
+                    const gptAnalysisResponse = await fetch('http://54.204.64.162:5000/analyze_bias_gpt4mini', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ text: articleText })
@@ -250,7 +250,7 @@ export function handleFormSubmission() {
                     console.log("Raw response text:", responseText);
 
 
-                    const geminiAnalysisResponse = await fetch('http://127.0.0.1:5000/analyze_bias_gemini', {
+                    const geminiAnalysisResponse = await fetch('http://54.204.64.162:5000/analyze_bias_gemini', {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
                         body: JSON.stringify({ text: articleText })

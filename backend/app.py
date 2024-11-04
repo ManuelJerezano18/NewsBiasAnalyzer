@@ -19,7 +19,12 @@ openai.api_key = os.getenv("OPENAI_API_KEY")
 genai.configure(api_key=os.getenv("GENAI_API_KEY"))
 
 # Add the path where nltk data is stored
-nltk.data.path.append('.scraping/nltk_data')
+#nltk.data.path.append('.scraping/nltk_data')
+
+#nltk.data.path.append('/home/ubuntu/scraping/nltk_data')  # Modify to the full path where nltk_data is located
+###print("NLTK data paths:", nltk.data.path)
+nltk.download('punkt')
+nltk.download('punkt_tab')
 
 app = Flask(__name__)
 
@@ -123,4 +128,4 @@ def scrape_article():
         return jsonify({"error": str(e)}), 500
 
 if __name__ == '__main__':
-    app.run(debug=True)
+    app.run(host='0.0.0.0', port=5000)
