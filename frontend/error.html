@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Analysis Error - News Bias Check</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Custom styling for error page */
+        .error-container {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            text-align: center;
+            background-color: #F7F5FB; /* Light background consistent with other pages */
+        }
+
+        .error-content {
+            font-family: 'Montserrat', sans-serif;
+            color: #25171A; /* Licorice */
+        }
+
+        .error-icon {
+            font-size: 5rem;
+            margin-bottom: 1.5rem;
+            color: #B2A59C; /* Warm Taupe for an error icon */
+        }
+
+        .error-message {
+            font-size: 1.8rem;
+            font-weight: bold;
+        }
+
+        .error-subtext {
+            font-size: 1.2rem;
+            color: #556C89; /* Slate Blue for subtle subtext */
+        }
+
+        .retry-button {
+            margin-top: 2rem;
+            padding: 0.8rem 1.5rem;
+            font-size: 1rem;
+            background-color: #4CB944; /* Dark Pastel Green */
+            color: white;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .retry-button:hover {
+            background-color: #3a9a37;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container-header">
+            <div class="top-bar">
+                <h1>News Bias Check</h1>
+                <div class="search-bar">
+                    <i class="fas fa-search"></i>
+                    <input type="text" placeholder="Search...">
+                </div>
+                <nav>
+                    <ul>
+                        <li><a href="index.html">Home</a></li>
+                        <li><a href="how-it-works.html">Features</a></li>
+                        <li><a href="#submit">Submit Article</a></li>
+                        <li><a href="#testimonials">Testimonials</a></li>
+                        <li><a href="profile.html">Profile</a></li>
+                    </ul>
+                </nav>
+            </div>
+        </div>
+    </header>
+
+    <div class="error-container">
+        <div class="error-content">
+            <i class="fas fa-exclamation-triangle error-icon"></i> <!-- Warning triangle icon for the error -->
+            <div class="error-message">Oops! Something went wrong during the analysis.</div>
+            <div id="error-subtext" class="error-subtext">We were unable to process the article. Please try again or submit a different link.</div>
+            <button class="retry-button" onclick="window.location.href='index.html'">Try Again</button> <!-- Retry button that links to the submission page -->
+        </div>
+    </div>
+
+    <footer>
+        <div class="container-footer">
+            <div class="footer-links">
+                <a href="#">About Us</a>
+                <a href="#">Privacy Policy</a>
+                <div class="social-icons">
+                    <a href="#"><i class="fab fa-facebook"></i></a>
+                    <a href="#"><i class="fab fa-twitter"></i></a>
+                    <a href="#"><i class="fab fa-linkedin"></i></a>
+                </div>
+            </div>
+            <p>&copy; 2024 News Bias Check. All Rights Reserved.</p>
+        </div>
+    </footer>
+    <script>
+        // Retrieve the error message from localStorage and display it
+        const errorMessage = localStorage.getItem('errorMessage');
+        console.log(errorMessage)
+        document.getElementById('error-subtext').textContent = errorMessage || 'An unknown error occurred.';
+    </script>
+</body>
+</html>
