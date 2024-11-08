@@ -32,7 +32,7 @@ app = Flask(__name__)
 #CORS(app, resources={r"/analyze_bias_gpt4mini": {"origins": "http://127.0.0.1:5500"}})
 #CORS(app, resources={r"/analyze_bias_gemini": {"origins": "http://127.0.0.1:5500"}})
 
-CORS(app, resources={r"/*": {"origins": ["https://newsbiascheck.net", "http://127.0.0.1:5500"]}})
+CORS(app, resources={r"/*": {"origins": "https://newsbiascheck.net"}})
 
 def analyze_with_gemini_flash(article_text):
     try:

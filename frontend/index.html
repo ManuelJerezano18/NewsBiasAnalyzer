@@ -24,6 +24,7 @@
                         <li><a href="#submit">Submit Article</a></li>
                         <li><a href="#testimonials">Testimonials</a></li>
                         <li><a href="profile.html">Profile</a></li>
+                        <li><button id="signOutButton" class="nav-signout">Sign Out</button></li> <!-- Sign Out button added here -->
                     </ul>
                 </nav>
             </div>
@@ -31,7 +32,6 @@
     </header>
 
     <div class="home-content">
-        
         <!-- Hero Section -->
         <section id="home" class="full-width-section hero" style="background-color: #F7F5FB;">
             <div class="container">
@@ -91,8 +91,6 @@
             </div>
         </div>
 
-
-
         <!-- Submit Article Section -->
         <section id="submit" class="full-width-section submit-article" style="background-color: #F7F5FB;">
             <div class="container">
@@ -108,7 +106,6 @@
             </div>
         </section>
 
-        
         <!-- Testimonials Section -->
         <section id="testimonials" class="full-width-section testimonials-section" style="background-color: #FFFFFF;">
             <div class="container">
@@ -150,6 +147,41 @@
         </footer>
     </div>
     
-    <script type="module" src="js/scripts.js"></script>
+    <!-- Firebase Authentication & Sign-Out Script -->
+    <script type="module">
+        import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
+        import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js";
+
+        // Firebase configuration
+        const firebaseConfig = {
+            apiKey: "AIzaSyBnjBn6sTwnqDjrMXdgmFZ2dugrL5OVLTI",
+            authDomain: "news-bias-analyzer.firebaseapp.com",
+            projectId: "news-bias-analyzer",
+            storageBucket: "news-bias-analyzer.appspot.com",
+            messagingSenderId: "661563307465",
+            appId: "1:661563307465:web:648bdabecbcf57b0d96418",
+        };
+
+        // Initialize Firebase
+        const app = initializeApp(firebaseConfig);
+        const auth = getAuth(app);
+
+        // Redirect to Sign In if the user is not logged in
+        onAuthStateChanged(auth, (user) => {
+            if (!user) {
+                window.location.href = "signin.html"; // Redirect to sign-in page if not logged in
+            }
+        });
+
+        // Sign out functionality
+        document.getElementById('signOutButton').addEventListener('click', () => {
+            signOut(auth).then(() => {
+                alert('Signed out successfully!');
+                window.location.href = 'signin.html'; // Redirect to sign-in page after signing out
+            }).catch((error) => {
+                console.error('Error during sign-out:', error.message);
+            });
+        });
+    </script>
 </body>
 </html>

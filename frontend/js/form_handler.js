@@ -150,7 +150,7 @@ async function analyzeWithMultipleModels(articleText) {
     const models = [
         { name: 'GPT4-mini', analyzeFunc: analyzeWithGPT4Mini },
         { name: 'Gemini', analyzeFunc: analyzeWithGemini },
-        // Add other models here as needed
+        
     ];
 
     const analysisResults = {};
@@ -302,4 +302,3 @@ export function handleFormSubmission() {
         });
     });
 }
-

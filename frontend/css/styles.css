@@ -689,3 +689,18 @@ canvas {
 .non-biased {
     color: green;
 }
+
+.nav-signout {
+    background: none;
+    border: none;
+    color: white;
+    cursor: pointer;
+    font-family: inherit;
+    font-size: inherit;
+    padding: 0;
+    text-decoration: underline;
+}
+
+.nav-signout:hover {
+    color: #ccc;
+}

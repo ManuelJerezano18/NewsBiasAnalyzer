@@ -10,13 +10,24 @@ const firebaseConfig = {
   appId: "1:661563307465:web:648bdabecbcf57b0d96418",
 };
 
+// Initialize Firebase and Firestore
+let app;
 let db;
 
 export function initializeFirebase() {
-  const app = initializeApp(firebaseConfig);
-  db = getFirestore(app);
+  if (!app) {
+    app = initializeApp(firebaseConfig);
+    db = getFirestore(app);
+    console.log("Firebase and Firestore initialized.");
+  } else {
+    console.log("Firebase already initialized.");
+  }
 }
 
 export function getDb() {
+  if (!db) {
+    console.error("Firestore instance not found. Initializing Firestore...");
+    initializeFirebase();
+  }
   return db;
 }
