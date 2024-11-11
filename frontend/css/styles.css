@@ -701,6 +701,21 @@ canvas {
     text-decoration: underline;
 }
 
+.download-btn {
+    padding: 10px 20px;
+    margin: 20px 0;
+    background-color: #28a745;
+    color: #fff;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    font-size: 16px;
+}
+
+.download-btn:hover {
+    background-color: #218838;
+}
+
 .nav-signout:hover {
     color: #ccc;
 }

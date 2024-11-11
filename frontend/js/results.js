@@ -1,18 +1,15 @@
 document.addEventListener('DOMContentLoaded', function() {
     const articleContainer = document.getElementById('article-container');
-    const analysisContainer = document.getElementById('analysis-container');
     const toggleButton = document.getElementById('toggleModelButton');
+    const downloadPdfButton = document.getElementById('downloadPdfButton');
+    const downloadTxtButton = document.getElementById('downloadTxtButton');
     const articleText = localStorage.getItem('articleText');
     const hfBiasAnalysis = JSON.parse(localStorage.getItem('biasAnalysisResult'));
-    const gptAnalysisResults = localStorage.getItem('gptAnalysisResults'); // Stored as plain text
-    const geminiAnalysisResults = localStorage.getItem('geminiAnalysisResults'); // Stored as plain text
+    const gptAnalysisResults = localStorage.getItem('gptAnalysisResults');
+    const geminiAnalysisResults = localStorage.getItem('geminiAnalysisResults');
     let currentModel = 'huggingface';
 
-    const analysisDiv = document.createElement('div');
-    analysisDiv.className = 'analysis-div';
-
     toggleButton.addEventListener('click', () => {
-        // Cycle through the models in sequence
         if (currentModel === 'huggingface') {
             currentModel = 'gpt4mini';
             toggleButton.textContent = 'Switch to Gemini Flash';
@@ -23,22 +20,16 @@ document.addEventListener('DOMContentLoaded', function() {
             currentModel = 'huggingface';
             toggleButton.textContent = 'Switch to GPT-4 Mini';
         }
-        
-        renderAnalysis();  // Re-render analysis based on the selected model
+        renderAnalysis();
     });
 
     function renderAnalysis() {
+        articleContainer.textContent = ''; // Clear previous content
         if (currentModel === 'huggingface') {
-            analysisDiv.style.display = 'none';
-            // Call the function to display Hugging Face analysis
             displayHuggingFaceAnalysis();
         } else if (currentModel === 'gpt4mini') {
-            analysisDiv.style.display = 'block';
-            // Call the function to display GPT-4 Mini analysis
             displayGPT4MiniAnalysis();
         } else if (currentModel === 'gemini') {
-            analysisDiv.style.display = 'block';
-            // Call the function to display Gemini Flash analysis
             displayGeminiFlashAnalysis();
         }
     }
@@ -47,7 +38,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const windowSize = 500;
         const overlap = 50;
         let start = 0;
-        
 
         while (start < articleText.length) {
             let chunk = articleText.slice(start, start + windowSize).trim();
@@ -80,7 +70,6 @@ document.addEventListener('DOMContentLoaded', function() {
 
             start += windowSize - overlap;
         }
-        analysisDiv.textContent = `Gemini Bias Analysis: ${geminiAnalysisResults}`;
     }
 
     function displayGPT4MiniAnalysis() {
@@ -92,6 +81,8 @@ document.addEventListener('DOMContentLoaded', function() {
         articleDiv.className = 'article-text';
         articleDiv.textContent = articleText;
 
+        const analysisDiv = document.createElement('div');
+        analysisDiv.className = 'analysis-div';
         analysisDiv.textContent = `GPT-4 Mini Bias Analysis: ${gptAnalysisResults}`;
 
         articleWrapper.appendChild(articleDiv);
@@ -108,6 +99,8 @@ document.addEventListener('DOMContentLoaded', function() {
         articleDiv.className = 'article-text';
         articleDiv.textContent = articleText;
 
+        const analysisDiv = document.createElement('div');
+        analysisDiv.className = 'analysis-div';
         analysisDiv.textContent = `Gemini Bias Analysis: ${geminiAnalysisResults}`;
 
         articleWrapper.appendChild(articleDiv);
@@ -115,7 +108,48 @@ document.addEventListener('DOMContentLoaded', function() {
         articleContainer.appendChild(articleWrapper);
     }
 
+    // Report download functionality
+    downloadPdfButton.addEventListener('click', () => {
+        const reportContent = generateReportContent();
+        createPdf(reportContent);
+    });
+
+    downloadTxtButton.addEventListener('click', () => {
+        const reportContent = generateReportContent();
+        const blob = new Blob([reportContent], { type: 'text/plain' });
+        const link = document.createElement('a');
+        link.href = URL.createObjectURL(blob);
+        link.download = 'bias-analysis-report.txt';
+        link.click();
+    });
+
+    function generateReportContent() {
+        return `
+        Article Analysis Report
+
+        Analysis Model: ${currentModel.toUpperCase()}
+        Article Excerpt: ${articleText.substring(0, 200)}... [truncated]
+
+        Analysis Results:
+        ${currentModel === 'huggingface' ? JSON.stringify(hfBiasAnalysis, null, 2) :
+        currentModel === 'gpt4mini' ? gptAnalysisResults : geminiAnalysisResults}
+        `;
+    }
+
+    function createPdf(content) {
+        const docDefinition = {
+            content: [
+                { text: 'Article Analysis Report', style: 'header' },
+                { text: content, style: 'body' }
+            ],
+            styles: {
+                header: { fontSize: 18, bold: true, margin: [0, 0, 0, 10] },
+                body: { fontSize: 12, margin: [0, 0, 0, 10] }
+            }
+        };
+        pdfMake.createPdf(docDefinition).download('bias-analysis-report.pdf');
+    }
+
     // Initial render
     renderAnalysis();
-
 });
