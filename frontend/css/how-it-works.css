@@ -1,0 +1,60 @@
+/* Full-width background for the How It Works section */
+.how-it-works {
+    background: #F7F5FB; /* Ghost White */
+    padding: 2rem 0;
+}
+
+/* Centering and constraining the content */
+.container-hiw {
+    max-width: 1200px; /* Constrain content to 1200px */
+    margin: 0 auto; /* Center the content */
+    padding: 0 2rem; /* Optional padding for spacing on smaller screens */
+}
+
+.how-it-works h2 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: #25171A; /* Licorice */
+    text-align: center;
+}
+
+.how-it-works p {
+    font-family: 'Lato', sans-serif;
+    font-size: 1.2rem;
+    color: #25171A;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.steps {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.step {
+    background: #E5E5E5; /* Soft Stone Gray */
+    padding: 2rem;
+    border-radius: 10px;
+    width: 45%;
+    margin-bottom: 2rem;
+    text-align: center;
+}
+
+.step i {
+    font-size: 2.5rem;
+    color: #4CB944; /* Dark Pastel Green */
+    margin-bottom: 1rem;
+}
+
+.step h3 {
+    font-family: 'Montserrat', sans-serif;
+    color: #25171A;
+    margin-bottom: 1rem;
+}
+
+.step p {
+    font-family: 'Lato', sans-serif;
+    color: #020122;
+}

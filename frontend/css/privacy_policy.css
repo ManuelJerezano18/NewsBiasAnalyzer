@@ -1,0 +1,52 @@
+/* Overall styling for the privacy policy page */
+.privacy-policy {
+    min-height: calc(100vh - 220px); /* Adjust based on your header/footer height */
+    background-color: #F7F7FA;
+    padding: 3rem 0; /* Increased padding for more breathing room */
+}
+
+.container {
+    max-width: 800px; /* Narrower container for better readability */
+    margin: 0 auto;
+    padding: 0 2rem;
+    background-color: #FFFFFF; /* White background for contrast */
+    border-radius: 8px; /* Rounded corners for a modern look */
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    padding: 2rem; /* Additional padding inside the container */
+}
+
+.privacy-policy h2 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2.5rem;
+    color: #25171A;
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-weight: 700;
+}
+
+.privacy-policy p {
+    font-family: 'Lato', sans-serif;
+    color: #333333; /* Darker text color for contrast */
+    line-height: 1.8;
+    font-size: 1rem;
+    margin-bottom: 1rem; /* Spacing between paragraphs */
+}
+
+.privacy-policy h3 {
+    font-family: 'Montserrat', sans-serif;
+    color: #25171A;
+    font-size: 1.6rem;
+    margin-top: 2rem; /* Increased spacing before headings */
+    margin-bottom: 0.5rem;
+    font-weight: 600; /* Slightly bold for better hierarchy */
+}
+
+.privacy-policy h3::before {
+    content: ''; /* Decorative underline */
+    display: block;
+    width: 50px;
+    height: 3px;
+    background-color: #4CB944; /* Accent color */
+    margin-bottom: 0.5rem;
+    border-radius: 2px;
+}
