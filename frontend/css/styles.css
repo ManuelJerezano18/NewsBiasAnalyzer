@@ -691,15 +691,16 @@ canvas {
 }
 
 .nav-signout {
-    background: none;
-    border: none;
-    color: white;
-    cursor: pointer;
-    font-family: inherit;
-    font-size: inherit;
-    padding: 0;
-    text-decoration: underline;
+    background: none;         /* Remove button background */
+    border: none;             /* Remove button border */
+    color: #ffffff;           /* Set text color to match */
+    font-size: inherit;       /* Inherit the font size */
+    font-family: inherit;     /* Inherit the font family */
+    cursor: pointer;          /* Make cursor a pointer like links */
+    text-decoration: none;    /* Remove underline */
+    padding: 0;               /* Remove extra padding */
 }
+
 
 .download-btn {
     padding: 10px 20px;
@@ -718,4 +719,111 @@ canvas {
 
 .nav-signout:hover {
     color: #ccc;
+}
+
+/* About Section Styling */
+.about-section {
+    padding-top: 100px;
+    padding-bottom: 50px;
+    background-color: #F7F7FA;
+    text-align: center;
+}
+
+.about-section h2 {
+    font-size: 28px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.mission-section, .how-it-works-section, .technology-section, .team-section {
+    padding: 30px 20px;
+    max-width: 1000px;
+    margin: auto;
+}
+
+/* Section Title Styling */
+section h2 {
+    font-size: 24px;
+    font-weight: 700;
+    color: #333;
+    text-align: center;
+}
+
+/* Alternating Background Colors */
+.mission-section {
+    background-color: #FFFFFF;
+}
+
+.how-it-works-section {
+    background-color: #F7F7FA;
+}
+
+.technology-section {
+    background-color: #FFFFFF;
+}
+
+.team-section {
+    background-color: #F7F7FA;
+}
+
+/* List Styling */
+section ul {
+    max-width: 800px;
+    margin: 20px auto;
+    padding: 0;
+    list-style-type: none;
+}
+
+section ul li {
+    margin: 10px 0;
+    padding-left: 20px;
+    position: relative;
+}
+
+section ul li:before {
+    content: '✔';
+    position: absolute;
+    left: 0;
+    color: #4CAF50;
+}
+
+/* Team Member Card Styling */
+.team-list {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 20px;
+    margin-top: 20px;
+}
+
+.team-member {
+    background-color: #FFF;
+    padding: 15px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    text-align: center;
+    width: 200px;
+    transition: transform 0.3s;
+}
+
+.team-member:hover {
+    transform: translateY(-5px);
+}
+
+.team-member img {
+    border-radius: 50%;
+    width: 70px;
+    height: 70px;
+    margin-bottom: 10px;
+}
+
+.team-member h3 {
+    font-size: 18px;
+    font-weight: 700;
+    margin: 10px 0 5px;
+}
+
+.team-member p {
+    font-size: 14px;
+    color: #555;
 }
