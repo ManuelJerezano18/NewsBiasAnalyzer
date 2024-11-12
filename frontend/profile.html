@@ -10,7 +10,7 @@
 </head>
 <body>
     <header>
-        <div class="container-header"> 
+        <div class="container-header">
             <div class="top-bar">
                 <h1>News Bias Check</h1>
                 <div class="search-bar">
@@ -22,8 +22,8 @@
                         <li><a href="index.html">Home</a></li>
                         <li><a href="how-it-works.html">Features</a></li>
                         <li><a href="#submit">Submit Article</a></li>
-                        <li><a href="#testimonials">Testimonials</a></li>
                         <li><a href="profile.html">Profile</a></li>
+                        <li><button id="signOutButton" class="nav-signout">Sign Out</button></li>
                     </ul>
                 </nav>
             </div>
@@ -32,25 +32,19 @@
 
     <!-- Profile Section -->
     <section class="profile-section">
-        <div class="container-profile"> <!-- Specific container class for profile page -->
+        <div class="container-profile">
             <div class="profile-content">
                 <div class="profile-info">
                     <div class="profile-picture">
                         <i class="fas fa-user-circle"></i>
                     </div>
                     <div class="profile-details">
-                        <h2>John Doe</h2>
-                        <p><strong>Age:</strong> 30</p>
-                        <p><strong>Gender:</strong> Male</p>
-                        <p><strong>Location:</strong> United States</p>
-                        <p><strong>Preferred Political Orientation:</strong> Moderate</p>
-                        <p><strong>Preferred News Sources:</strong> BBC, The Guardian, The New York Times</p>
-                        <p><strong>Account Creation Date:</strong> January 15, 2023</p>
-                        <p><strong>Last Login Date:</strong> October 5, 2024</p>
+                        <h2 id="user-name">User Name</h2>
+                        <p><strong>Email:</strong> <span id="user-email">example@example.com</span></p>
                     </div>
                 </div>
 
-                <div class="empty-area">
+                <div class="history-area">
                     <h2>History of Analyzed Articles</h2>
                     <table class="article-history-table">
                         <thead>
@@ -62,36 +56,14 @@
                             </tr>
                         </thead>
                         <tbody id="article-history-body">
-                            <!-- Placeholder for dynamically inserted rows -->
+                            <!-- Data will be dynamically populated -->
                         </tbody>
                     </table>
-                
-                    <!-- Pagination Controls -->
-                    <div class="pagination">
-                        <button class="page-btn" id="prev-page" disabled>Previous</button>
-                        <span id="current-page">Page 1</span>
-                        <button class="page-btn" id="next-page">Next</button>
-                    </div>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Footer -->
-    <footer>
-        <div class="container-footer"> <!-- Use a specific container for the footer to avoid affecting other pages -->
-            <div class="footer-links">
-                <a href="#">About Us</a>
-                <a href="#">Privacy Policy</a>
-                <div class="social-icons">
-                    <a href="#"><i class="fab fa-facebook"></i></a>
-                    <a href="#"><i class="fab fa-twitter"></i></a>
-                    <a href="#"><i class="fab fa-linkedin"></i></a>
-                </div>
-            </div>
-            <p>&copy; 2024 News Bias Check. All Rights Reserved.</p>
-        </div>
-    </footer>
     <script type="module" src="js/profile.js"></script>
 </body>
 </html>

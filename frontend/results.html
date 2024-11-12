@@ -7,6 +7,7 @@
     <link rel="stylesheet" href="css/styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script> <!-- Added jsPDF -->
 </head>
 <body>
     <header>
@@ -21,9 +22,8 @@
                     <ul>
                         <li><a href="index.html">Home</a></li>
                         <li><a href="how-it-works.html">Features</a></li>
-                        <li><a href="#submit">Submit Article</a></li>
-                        <li><a href="#testimonials">Testimonials</a></li>
                         <li><a href="profile.html">Profile</a></li>
+                        <li><button id="signOutButton" class="btn-signout">Sign Out</button></li>
                     </ul>
                 </nav>
             </div>
@@ -50,6 +50,12 @@
             <canvas id="topicChart" width="400" height="400"></canvas>
             <canvas id="politicalSpectrumChart" width="400" height="400"></canvas>
         </div>
+    </section>
+
+    <!-- Add buttons for report download -->
+    <section class="report-download">
+        <button id="downloadPdfButton">Download PDF Report</button>
+        <button id="downloadTxtButton">Download Text Report</button>
     </section>
 
     <!-- Footer -->
