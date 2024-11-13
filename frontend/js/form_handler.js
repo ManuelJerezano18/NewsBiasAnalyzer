@@ -1,4 +1,5 @@
 import { getDb } from './firebase.js';
+import { getAuth } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js";
 import { collection, addDoc } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
 
 // Valid domains list
@@ -89,8 +90,6 @@ async function getBiasAnalysisWithSlidingWindow(articleText, windowSize = 500, o
                 console.error("Error in API call:", result.error);
                 return null; // Handle error here
             }
-
-            // Return result for each chunk
             return result;
         })
         .catch(error => {
@@ -102,20 +101,15 @@ async function getBiasAnalysisWithSlidingWindow(articleText, windowSize = 500, o
 
         // Move the window forward, with overlap
         start += windowSize - overlap;
-        //console.log("chunk", chunk)
     }
 
-    
     // Wait for all API calls to resolve
     const results = await Promise.all(promises);
-    //await new Promise(r => setTimeout(r, 5000));
-    console.log("RESULTS", results)
+    console.log("Bias analysis results:", results);
     return results;
 }
 
-
-
-
+// Handle form submission
 export function handleFormSubmission() {
     document.addEventListener('DOMContentLoaded', function() {
         const submitButton = document.getElementById('submitButton');
@@ -127,102 +121,73 @@ export function handleFormSubmission() {
         const featuresSection = document.getElementById('features');
         const testimonialsSection = document.getElementById('testimonials');
 
+        // Initialize Firebase Auth
+        const auth = getAuth();
+
         submitButton.addEventListener('click', async function(event) {
             event.preventDefault();
-            const url = urlField.value;
+            const user = auth.currentUser;
 
-            const domainStatus = isValidDomain(url);
+            if (user) {
+                const url = urlField.value;
+                const domainStatus = isValidDomain(url);
 
-            if (domainStatus === 1) {
-                errorMessage.textContent = 'The URL format is invalid. Please enter a correct URL.';
-            } else if (domainStatus === 2) {
-                errorMessage.textContent = 'The article URL must be from a trusted news source.';
-            } else {
-                errorMessage.textContent = '';  // Clear any previous error messages
+                if (domainStatus === 1) {
+                    errorMessage.textContent = 'The URL format is invalid. Please enter a correct URL.';
+                } else if (domainStatus === 2) {
+                    errorMessage.textContent = 'The article URL must be from a trusted news source.';
+                } else {
+                    errorMessage.textContent = '';  // Clear any previous error messages
 
-                // Show loading section and hide form
-                submitSection.style.display = 'none';
-                loadingSection.style.display = 'block';
-                homeSection.style.display = 'none';
-                featuresSection.style.display = 'none';
-                testimonialsSection.style.display = 'none';
+                    // Show loading section and hide form
+                    submitSection.style.display = 'none';
+                    loadingSection.style.display = 'block';
+                    homeSection.style.display = 'none';
+                    featuresSection.style.display = 'none';
+                    testimonialsSection.style.display = 'none';
 
-                try {
-                    const article = await callScrapingAPI(url);
-                    const articleText = article.text;
+                    try {
+                        const article = await callScrapingAPI(url);
+                        const articleText = article.text;
+                        const articleTitle = article.title || 'Untitled'; // Extract title if available
 
-                    // Store article text in localStorage for retrieval on results.html
-                    localStorage.setItem('articleText', articleText);
+                        // Store article text in localStorage for retrieval on results.html
+                        localStorage.setItem('articleText', articleText);
 
-                    // Pass the articleText to the new analysis function
-                    const analysisResults = await getBiasAnalysisWithSlidingWindow(articleText);
+                        // Perform bias analysis
+                        const analysisResults = await getBiasAnalysisWithSlidingWindow(articleText);
+                        const biasScore = analysisResults ? analysisResults.overallBiasScore || 'N/A' : 'N/A';
 
-                    const gptAnalysisResponse = await fetch('https://backend.newsbiascheck.net/analyze_bias_gpt4mini', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ text: articleText })
-                    });
-                    
-                    if (!gptAnalysisResponse.ok) {
-                        await new Promise(r => setTimeout(r, 5000));
-                        console.log("fail gpt4mini");
-                        throw new Error("Analysis failed");
-                    }
-                    
-                    // Read as text first, then parse if needed
-                    const responseText = await gptAnalysisResponse.text();
-                    const gptAnalysisResults = { analysisText: responseText };
-                    console.log("Raw response text:", responseText);
+                        if (analysisResults) {
+                            const analysisResultsString = JSON.stringify(analysisResults);
 
+                            const db = getDb();
+                            await addDoc(collection(db, `Users/${user.uid}/Articles`), {
+                                article_title: articleTitle,
+                                article_url: url,
+                                submission_date: new Date(),
+                                bias_score: biasScore,
+                                analysis_results: analysisResultsString
+                            });
 
-                    const geminiAnalysisResponse = await fetch('https://backend.newsbiascheck.net/analyze_bias_gemini', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ text: articleText })
-                    });
-                    
-                    if (!geminiAnalysisResponse.ok) {
-                        await new Promise(r => setTimeout(r, 5000));
-                        console.log("fail gemini");
-                        throw new Error("Analysis failed");
-                    }
-                    
-                    // Read as text first, then parse if needed
-                    const geminiResponseText = await geminiAnalysisResponse.text();
-                    const geminiAnalysisResults = { analysisText: geminiResponseText };
-                    console.log("Raw response text gemini:", geminiResponseText);
-                    await new Promise(r => setTimeout(r, 15000));
+                            // Store the analysis results in localStorage before redirecting
+                            localStorage.setItem('biasAnalysisResults', analysisResultsString);
 
-
-                    localStorage.setItem('geminiAnalysisResults', responseText);
-                    localStorage.setItem('gptAnalysisResults', geminiResponseText);
-                    await new Promise(r => setTimeout(r, 15000));
-                    
-                    //const gptAnalysisResults = await analyzeWithMultipleModels(articleText);
-                    //console.log(gptAnalysisResults)
-                    if (analysisResults) {
-                        const analysisResultsString = JSON.stringify(analysisResults);
-
-                        const db = getDb();
-                        await addDoc(collection(db, "Articles"), {
-                            article_url: url,
-                            submission_date: new Date(),
-                            analysis_results: analysisResultsString
-                        });
-
-                        // Store the analysis results in localStorage before redirecting
-                        localStorage.setItem('biasAnalysisResults', analysisResultsString);
-                        // Redirect to results page
-                        
-                        window.location.href = 'results.html';
-                    } else {
-                        localStorage.setItem('errorMessage', 'Failed to perform bias analysis. Please try again.');
+                            // Redirect to results page
+                            window.location.href = 'results.html';
+                        } else {
+                            localStorage.setItem('errorMessage', 'Failed to perform bias analysis. Please try again.');
+                            window.location.href = 'error.html';
+                        }
+                    } catch (error) {
+                        localStorage.setItem('errorMessage', `An error occurred: ${error.message}`);
                         window.location.href = 'error.html';
                     }
-                } catch (error) {
-                    localStorage.setItem('errorMessage', `An error occurred: ${error.message}`);
-                    window.location.href = 'error.html';
                 }
+            } else {
+                console.error("User is not authenticated");
+                alert("Please sign in to submit an article.");
+                window.location.href = 'signin.html'; // Redirect to sign-in page if not authenticated
             }
         });
     });

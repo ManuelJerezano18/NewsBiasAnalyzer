@@ -853,3 +853,26 @@ section ul li:before {
     margin: auto;
     text-align: left;
 }
+
+.history-container {
+    margin: 0 auto;
+    max-width: 800px;
+    text-align: center;
+}
+
+.article-history-table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+
+.article-history-table th, .article-history-table td {
+    border: 1px solid #ddd;
+    padding: 8px;
+    text-align: center;
+}
+
+.article-history-table th {
+    background-color: #f2f2f2;
+    font-weight: bold;
+}
