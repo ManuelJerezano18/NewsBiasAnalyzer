@@ -1,0 +1,33 @@
+.hero {
+    background: #F7F5FB; /* Ghost White */
+    padding: 2rem 0;
+    text-align: center;
+    border-bottom: 5px solid #D3D3D3; /* Divider between sections */
+}
+
+.hero h2 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    color: #25171A;
+}
+
+.hero p {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    font-family: 'Lato', sans-serif;
+}
+
+.hero .btn {
+    background: #4CB944; /* Dark Pastel Green */
+    color: #F7F5FB;
+    padding: 0.8rem 1.5rem;
+    text-decoration: none;
+    border-radius: 2vmin;
+    font-family: 'Lato', sans-serif;
+    display: inline-block;
+}
+
+.hero .btn:hover {
+    background-color: #3CA935; /* Slightly darker green on hover */
+}

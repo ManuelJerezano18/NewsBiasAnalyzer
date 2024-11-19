@@ -1,0 +1,52 @@
+.testimonials-section {
+    padding: 2rem 0;
+    background: #F7F5FB; /* Ghost White */
+}
+
+#testimonials h2 {
+    text-align: center;
+    margin-bottom: 1.5rem;
+    font-family: 'Montserrat', sans-serif;
+    color: #25171A; /* Licorice */
+}
+
+.testimonial-list {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+}
+
+.testimonial {
+    background: #E5E5E5; /* Soft Stone Gray */
+    padding: 1rem;
+    border-radius: 5px;
+    width: 30%;
+    margin-bottom: 1rem;
+    text-align: center;
+    font-style: italic;
+}
+
+.testimonial h4 {
+    font-weight: bold;
+    margin-top: 0.5rem;
+}
+
+.cta-button {
+    text-align: center;
+    margin-top: 1.5rem;
+}
+
+.btn-fix {
+    background: #4CB944; /* Dark Pastel Green */
+    color: #F7F5FB; /* Ghost White */
+    padding: 0.8rem 2rem;
+    text-decoration: none;
+    border-radius: 2vmin;
+    font-family: 'Lato', sans-serif;
+    font-size: 1.2rem;
+    display: inline-block;
+}
+
+.btn-fix:hover {
+    background-color: #3CA935; /* Slightly darker green on hover */
+}

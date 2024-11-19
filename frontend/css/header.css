@@ -1,0 +1,74 @@
+/* Full-width background for the header */
+header {
+    background: #020122; /* Oxford Blue */
+    width: 100%;
+    padding: 1.8rem 0;
+}
+
+/* Centering and constraining the content */
+.container-header {
+    max-width: 1200px; /* Constrain content to 1200px */
+    margin: 0 auto; /* Center the content */
+    padding: 0 2rem; /* Optional padding for spacing on smaller screens */
+}
+
+/* Styling for top-bar content */
+.top-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: #F7F5FB; /* Ghost White */
+}
+
+.top-bar h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.8rem;
+    margin-right: 2rem;
+}
+
+.search-bar {
+    display: flex;
+    align-items: center;
+    background-color: #E5E5E5; /* Soft Stone Gray */
+    padding: 0.3rem 1rem;
+    border-radius: 20px;
+    margin-right: auto;
+}
+
+.search-bar input {
+    border: none;
+    background: transparent;
+    outline: none;
+    font-family: 'Lato', sans-serif;
+    font-size: 1rem;
+}
+
+.top-bar nav ul {
+    list-style: none;
+    display: flex;
+    align-items: center;
+}
+
+.top-bar nav ul li {
+    margin-left: 20px;
+}
+
+.top-bar nav ul li a {
+    color: #F7F5FB; /* Ghost White */
+    text-decoration: none;
+    font-family: 'Lato', sans-serif;
+    padding: 0.5rem 1rem;
+}
+
+
+.nav-signout {
+    background: none;         /* Remove button background */
+    border: none;             /* Remove button border */
+    color: #ffffff;           /* Set text color to match */
+    font-size: inherit;       /* Inherit the font size */
+    font-family: inherit;     /* Inherit the font family */
+    cursor: pointer;          /* Make cursor a pointer like links */
+    text-decoration: none;    /* Remove underline */
+    padding: 0;               /* Remove extra padding */
+}
+

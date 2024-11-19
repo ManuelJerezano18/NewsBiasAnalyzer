@@ -1,0 +1,72 @@
+/* Full-width background for the analysis section */
+.analysis-section {
+    max-width: 1000px;
+    background: #F7F5FB; /* Ghost White */
+    padding: 2rem 0;
+    min-height: calc(100vh - 200px); /* Adjust based on header and footer height */
+}
+
+/* Constrain content to 1200px and center */
+.container-footer,
+.model-toggle,
+.chart-section,
+.report-download {
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 0 2rem; /* Optional padding for spacing */
+}
+
+/* Model toggle button */
+.model-toggle {
+    text-align: center;
+    margin-bottom: 2rem;
+}
+
+.model-toggle button {
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    background-color: #4CB944; /* Dark Pastel Green */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.model-toggle button:hover {
+    background-color: #3a9a37;
+}
+
+/* Article and analysis containers */
+#article-container,
+#analysis-container {
+    margin-bottom: 2rem;
+}
+
+/* Chart Section Styling */
+.chart-section {
+    display: flex;
+    justify-content: space-around;
+    flex-wrap: wrap;
+    gap: 1rem;
+}
+
+/* Report download buttons */
+.report-download {
+    text-align: center;
+    margin-top: 2rem;
+}
+
+.report-download button {
+    margin: 0.5rem;
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    background-color: #4CB944; /* Dark Pastel Green */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.report-download button:hover {
+    background-color: #3a9a37;
+}

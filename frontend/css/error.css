@@ -1,0 +1,45 @@
+/* Custom styling for error page */
+.error-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+    background-color: #F7F5FB; /* Light background consistent with other pages */
+}
+
+.error-content {
+    font-family: 'Montserrat', sans-serif;
+    color: #25171A; /* Licorice */
+}
+
+.error-icon {
+    font-size: 5rem;
+    margin-bottom: 1.5rem;
+    color: #B2A59C; /* Warm Taupe for an error icon */
+}
+
+.error-message {
+    font-size: 1.8rem;
+    font-weight: bold;
+}
+
+.error-subtext {
+    font-size: 1.2rem;
+    color: #556C89; /* Slate Blue for subtle subtext */
+}
+
+.retry-button {
+    margin-top: 2rem;
+    padding: 0.8rem 1.5rem;
+    font-size: 1rem;
+    background-color: #4CB944; /* Dark Pastel Green */
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.retry-button:hover {
+    background-color: #3a9a37;
+}

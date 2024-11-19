@@ -1,0 +1,39 @@
+/* Loading Container Styling */
+.loading-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    text-align: center;
+    background-color: #F7F5FB; /* Light background consistent with other pages */
+}
+
+.loading-content {
+    font-family: 'Montserrat', sans-serif;
+    color: #25171A; /* Licorice */
+}
+
+.loading-icon {
+    font-size: 5rem;
+    margin-bottom: 1.5rem;
+    color: #4CB944; /* Dark Pastel Green */
+    animation: spin 1.5s linear infinite;
+}
+
+@keyframes spin {
+    from {
+        transform: rotate(0deg);
+    }
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+.loading-message {
+    font-size: 1.5rem;
+}
+
+.loading-subtext {
+    font-size: 1rem;
+    color: #556C89; /* Slate Blue for subtle subtext */
+}
