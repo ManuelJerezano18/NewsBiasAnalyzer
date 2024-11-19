@@ -1,72 +1,101 @@
 /* Common styles */
 body {
     font-family: Arial, sans-serif;
-    background-color: #f0f0f0;
+    background-color: #f4f4f9; /* Softer background for a cleaner look */
     padding: 20px;
+    margin: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
 }
 
 .auth-container {
     max-width: 400px;
     margin: 0 auto;
     background-color: white;
-    padding: 20px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    padding: 25px 20px;
+    border-radius: 12px; /* Softer corners for modern design */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Enhanced shadow for depth */
     text-align: center;
+    animation: fadeIn 0.8s ease-in-out; /* Smooth fade-in effect */
 }
 
 h1 {
-    font-size: 24px;
+    font-size: 26px;
     color: #333;
     margin-bottom: 20px;
+    font-weight: bold; /* Added emphasis */
 }
 
 label {
     display: block;
     text-align: left;
     margin: 10px 0 5px;
-    color: #555;
+    color: #444; /* Slightly darker label for better contrast */
     font-size: 14px;
+    font-weight: 500; /* Slight emphasis for labels */
 }
 
 input {
     width: 100%;
-    padding: 10px;
+    padding: 12px; /* Increased padding for better usability */
     margin: 10px 0;
-    border-radius: 4px;
+    border-radius: 6px; /* Softer corners */
     border: 1px solid #ccc;
     box-sizing: border-box;
+    font-size: 15px; /* Slightly larger input text */
+    transition: border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+input:focus {
+    border-color: #007BFF; /* Blue focus border */
+    box-shadow: 0 0 5px rgba(0, 123, 255, 0.5); /* Subtle glow effect */
+    outline: none;
 }
 
 button {
     width: 100%;
-    padding: 10px;
+    padding: 12px; /* Increased padding */
     background-color: #007BFF;
     color: white;
     border: none;
-    border-radius: 4px;
+    border-radius: 6px; /* Softer corners */
     cursor: pointer;
-    margin-top: 10px;
+    margin-top: 15px;
     font-size: 16px;
+    font-weight: bold; /* Bold text for buttons */
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth hover effects */
 }
 
 button:hover {
-    background-color: #0056b3;
+    background-color: #0056b3; /* Slightly darker blue on hover */
+    transform: translateY(-2px); /* Lift effect on hover */
+}
+
+button:active {
+    transform: translateY(0); /* Reset lift effect when clicked */
+    background-color: #004080; /* Even darker blue for active state */
 }
 
 .error {
     color: red;
     font-size: 12px;
     margin-top: 5px;
+    font-weight: bold; /* Added emphasis for errors */
+    text-align: left;
 }
 
 /* Link styling for "Sign up here" */
 .centered-text a {
     color: #007BFF;
     text-decoration: none;
+    font-weight: 500; /* Added emphasis for links */
+    transition: color 0.3s ease;
 }
 
 .centered-text a:hover {
+    color: #0056b3; /* Darker blue on hover */
     text-decoration: underline;
 }
 
@@ -78,23 +107,66 @@ button:hover {
 }
 
 #signOutButton {
-    background-color: red;
+    background-color: #FF4C4C; /* Brighter red for visibility */
     color: white;
     border: none;
     padding: 10px 15px;
-    border-radius: 4px;
+    border-radius: 6px; /* Softer corners */
     cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth hover effects */
 }
 
 #signOutButton:hover {
-    background-color: #cc0000;
+    background-color: #cc0000; /* Slightly darker red on hover */
+    transform: scale(1.05); /* Slight scale-up on hover */
 }
 
+#signOutButton:active {
+    background-color: #990000; /* Even darker red for active state */
+    transform: scale(1); /* Reset scaling */
+}
+
+/* Code block styling for pre elements */
 pre {
     text-align: left;
     white-space: pre-wrap;
     background-color: #f9f9f9;
     padding: 15px;
-    border-radius: 5px;
-    box-shadow: 0 0 5px rgba(0, 0, 0, 0.1);
+    border-radius: 8px; /* Softer corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
+    font-family: 'Courier New', Courier, monospace;
+    font-size: 14px; /* Slightly larger text for readability */
+    color: #333; /* Darker text for contrast */
+}
+
+/* Smooth fade-in animation */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .auth-container {
+        padding: 20px 15px; /* Adjust padding for smaller screens */
+    }
+
+    h1 {
+        font-size: 22px; /* Slightly smaller heading for mobile */
+    }
+
+    button {
+        font-size: 15px; /* Adjust button font size for smaller screens */
+    }
+
+    input {
+        font-size: 14px; /* Adjust input font size for mobile */
+    }
 }

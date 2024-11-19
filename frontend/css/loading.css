@@ -6,34 +6,54 @@
     height: 100vh;
     text-align: center;
     background-color: #F7F5FB; /* Light background consistent with other pages */
+    padding: 1rem; /* Added padding for small screens */
 }
 
 .loading-content {
     font-family: 'Montserrat', sans-serif;
     color: #25171A; /* Licorice */
+    max-width: 90%; /* Prevent text overflow on small screens */
+    animation: fadeIn 0.8s ease-in-out; /* Fade-in animation for smoother appearance */
 }
 
+/* Loading Icon Styling */
 .loading-icon {
     font-size: 5rem;
     margin-bottom: 1.5rem;
     color: #4CB944; /* Dark Pastel Green */
-    animation: spin 1.5s linear infinite;
+    animation: spinAndPulse 1.5s linear infinite; /* Combined spinning and pulsing */
 }
 
-@keyframes spin {
-    from {
-        transform: rotate(0deg);
+@keyframes spinAndPulse {
+    0% {
+        transform: rotate(0deg) scale(1); /* Start spinning and default size */
     }
-    to {
-        transform: rotate(360deg);
+    50% {
+        transform: rotate(180deg) scale(1.1); /* Halfway spin and pulse */
+    }
+    100% {
+        transform: rotate(360deg) scale(1); /* Full spin and back to default size */
     }
 }
 
+/* Loading Message Styling */
 .loading-message {
-    font-size: 1.5rem;
+    font-size: 1.8rem; /* Slightly larger for better visibility */
+    margin-bottom: 0.5rem; /* Space between message and subtext */
 }
 
 .loading-subtext {
-    font-size: 1rem;
+    font-size: 1.2rem; /* Slightly larger for readability */
     color: #556C89; /* Slate Blue for subtle subtext */
+    line-height: 1.5; /* Better spacing for multi-line subtext */
+}
+
+/* Fade-in Animation for Content */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }

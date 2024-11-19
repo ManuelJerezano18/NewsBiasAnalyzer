@@ -6,17 +6,16 @@
     <title>Article Analysis - News Bias Check</title>
 
     <!-- CSS Imports -->
-    <link rel="stylesheet" href="css/globals.css">          <!-- Global styles and resets -->
-    <link rel="stylesheet" href="css/header.css">           <!-- Header-specific styles -->
-    <link rel="stylesheet" href="css/results.css">         <!-- Analysis-specific styles -->
-    <link rel="stylesheet" href="css/footer.css">           <!-- Footer-specific styles -->
+    <link rel="stylesheet" href="css/globals.css">
+    <link rel="stylesheet" href="css/header.css">
+    <link rel="stylesheet" href="css/results.css">
+    <link rel="stylesheet" href="css/footer.css">
 
     <!-- Google Fonts and Font Awesome -->
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
-    
-    <!-- Chart.js and jsPDF -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
 <body>
     <header>
@@ -40,35 +39,32 @@
         </div>
     </header>
 
-    <section class="analysis-section">
-        <!-- Toggle Button for Model Switching -->
-        <div class="model-toggle">
-            <button id="toggleModelButton">Switch to GPT-4 Mini</button>
-        </div>
+    <main class="analysis-container">
+        <section class="center-content">
+            <div class="model-toggle">
+                <button id="toggleModelButton">Switch to GPT-4 Mini</button>
+            </div>
 
-        <!-- Container for the article chunks and their corresponding analysis -->
-        <div id="article-container">
-            <!-- Article chunks will be displayed here -->
-        </div>
-        <div id="analysis-container">
-            <!-- Analysis results will be displayed here -->
-        </div>
+            <div id="article-container">
+                <!-- Article chunks will be displayed here -->
+            </div>
+            <div id="analysis-container">
+                <!-- Analysis results will be displayed here -->
+            </div>
+        </section>
 
-        <!-- Canvas elements for the additional charts -->
         <div class="chart-section">
             <canvas id="sentimentChart" width="400" height="400"></canvas>
             <canvas id="topicChart" width="400" height="400"></canvas>
             <canvas id="politicalSpectrumChart" width="400" height="400"></canvas>
         </div>
-    </section>
 
-    <!-- Add buttons for report download -->
-    <section class="report-download">
-        <button id="downloadPdfButton">Download PDF Report</button>
-        <button id="downloadTxtButton">Download Text Report</button>
-    </section>
+        <section class="report-download">
+            <button id="downloadPdfButton">Download PDF Report</button>
+            <button id="downloadTxtButton">Download Text Report</button>
+        </section>
+    </main>
 
-    <!-- Footer -->
     <footer>
         <div class="container-footer">
             <div class="footer-links">

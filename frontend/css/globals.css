@@ -12,7 +12,7 @@ body {
     font-family: 'Lato', sans-serif;
     line-height: 1.6;
     color: #25171A; /* Licorice */
-    background-color: #F7F5FB; /* Ghost White */
+    background-color: #F7F5FB; /* Ghost White as a fallback for areas without gradients */
 }
 
 .container {
@@ -20,4 +20,22 @@ body {
     max-width: 1200px; /* Limit width to 1200px */
     margin: 0 auto; /* Center align */
     overflow: hidden;
+}
+
+/* Add general reusable utility classes */
+.shadow-light {
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.shadow-medium {
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+}
+
+.rounded {
+    border-radius: 10px;
+}
+
+/* Utility class to explicitly apply gradient backgrounds */
+.bg-gradient {
+    background: linear-gradient(180deg, #FFFFFF, #F7F5FB); /* Custom gradient */
 }

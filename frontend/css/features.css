@@ -1,43 +1,57 @@
+/* Features Section */
 .features-section {
-    padding: 2rem 0;
-    background: #FFFFFF;
-    border-bottom: 5px solid #D3D3D3;
+    background: linear-gradient(to bottom, 
+        #F7F5FB 0px,       /* Start with F7F5FB */
+        #F0F0F0 150px,      /* Transition to F0F0F0 at 50px */
+        #F0F0F0 calc(100% - 50px), /* Maintain F0F0F0 until the last 50px */
+        #F7F5FB);          /* Transition back to F7F5FB at the bottom */
+    padding: 4rem 2rem;
 }
-
 .features-section h2 {
     text-align: center;
-    margin-bottom: 1.5rem;
+    font-size: 2.5rem;
+    margin-bottom: 2rem;
     font-family: 'Montserrat', sans-serif;
-    color: #25171A;
+    color: #222;
 }
 
 .feature-list {
-    display: flex;
-    justify-content: space-around;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 2rem;
 }
 
 .feature {
-    background: #E5E5E5;
-    padding: 1rem;
-    border-radius: 5px;
-    width: 30%;
-    margin-bottom: 1rem;
+    background: #FFFFFF; /* Keep the white background for feature cards */
+    border-radius: 10px;
+    padding: 2rem;
     text-align: center;
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Stronger shadow for better visibility */
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    border: 1px solid #E0E0E0; /* Subtle border to define the boxes */
+    margin-bottom: 10px; /* Added hoverable spacing */
+}
+
+.feature:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2); /* Larger shadow on hover for focus */
 }
 
 .feature i {
-    font-size: 2rem;
+    font-size: 2.5rem;
     color: #4CB944;
-    margin-bottom: 0.5rem;
+    margin-bottom: 1rem;
 }
 
 .feature h3 {
     font-family: 'Montserrat', sans-serif;
-    color: #25171A;
+    color: #333;
+    font-size: 1.5rem;
+    margin-bottom: 1rem;
 }
 
 .feature p {
     font-family: 'Lato', sans-serif;
-    color: #020122;
+    color: #666;
+    font-size: 1rem;
 }

@@ -6,40 +6,97 @@
     height: 100vh;
     text-align: center;
     background-color: #F7F5FB; /* Light background consistent with other pages */
+    padding: 1rem; /* Added padding for small screens */
 }
 
 .error-content {
     font-family: 'Montserrat', sans-serif;
     color: #25171A; /* Licorice */
+    max-width: 90%; /* Prevent content from overflowing on smaller screens */
+    animation: fadeIn 0.8s ease-in-out; /* Smooth fade-in for the error content */
 }
 
+/* Pulsating Error Icon */
 .error-icon {
     font-size: 5rem;
     margin-bottom: 1.5rem;
     color: #B2A59C; /* Warm Taupe for an error icon */
+    animation: pulse 1.5s infinite; /* Pulsating animation */
 }
 
+@keyframes pulse {
+    0%, 100% {
+        transform: scale(1); /* Default size */
+    }
+    50% {
+        transform: scale(1.1); /* Enlarged size */
+    }
+}
+
+/* Error Message Styling */
 .error-message {
-    font-size: 1.8rem;
+    font-size: 2rem; /* Slightly larger for emphasis */
     font-weight: bold;
+    margin-bottom: 1rem; /* Space between message and subtext */
 }
 
 .error-subtext {
     font-size: 1.2rem;
     color: #556C89; /* Slate Blue for subtle subtext */
+    line-height: 1.6; /* Improved readability */
 }
 
+/* Retry Button Styling */
 .retry-button {
     margin-top: 2rem;
     padding: 0.8rem 1.5rem;
-    font-size: 1rem;
+    font-size: 1.1rem; /* Slightly larger for better visibility */
+    font-family: 'Montserrat', sans-serif;
     background-color: #4CB944; /* Dark Pastel Green */
     color: white;
     border: none;
     border-radius: 5px;
     cursor: pointer;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    transition: background-color 0.3s ease, transform 0.3s ease; /* Smooth hover animation */
 }
 
 .retry-button:hover {
-    background-color: #3a9a37;
+    background-color: #3a9a37; /* Darker green for hover */
+    transform: translateY(-2px); /* Lift effect on hover */
+}
+
+.retry-button:active {
+    background-color: #2f7d2d; /* Even darker green on click */
+    transform: translateY(0); /* Reset lift effect */
+}
+
+/* Fade-in Animation for Content */
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
+}
+
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .error-content {
+        font-size: 0.9rem;
+    }
+
+    .error-message {
+        font-size: 1.5rem; /* Slightly smaller for mobile */
+    }
+
+    .error-subtext {
+        font-size: 1rem; /* Adjust subtext size for smaller screens */
+    }
+
+    .retry-button {
+        font-size: 1rem; /* Adjust button size */
+        padding: 0.7rem 1.2rem;
+    }
 }

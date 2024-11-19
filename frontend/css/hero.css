@@ -1,33 +1,43 @@
+/* Hero Section */
 .hero {
-    background: #F7F5FB; /* Ghost White */
-    padding: 2rem 0;
+    background: linear-gradient(135deg, #006400, #228B22); /* Vibrant dark green gradient */
+    padding: 5rem 0; /* Increased padding for better prominence */
     text-align: center;
-    border-bottom: 5px solid #D3D3D3; /* Divider between sections */
+    color: #FFF; /* White text for better contrast */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Add subtle shadow under hero section */
 }
 
 .hero h2 {
     font-family: 'Montserrat', sans-serif;
-    font-size: 2rem;
-    margin-bottom: 0.5rem;
-    color: #25171A;
+    font-size: 3rem; /* Larger heading size */
+    margin-bottom: 1.5rem;
+    color: #FFF; /* Ensure text remains white */
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.5); /* Subtle text shadow */
 }
 
 .hero p {
-    font-size: 1rem;
-    margin-bottom: 1rem;
+    font-size: 1.3rem; /* Slightly larger paragraph text */
+    margin-bottom: 2rem;
     font-family: 'Lato', sans-serif;
+    color: #F0F0F0; /* Lighter text for better contrast */
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.3); /* Subtle shadow for clarity */
 }
 
 .hero .btn {
-    background: #4CB944; /* Dark Pastel Green */
-    color: #F7F5FB;
-    padding: 0.8rem 1.5rem;
-    text-decoration: none;
-    border-radius: 2vmin;
     font-family: 'Lato', sans-serif;
+    background-color: #FFF;
+    color: #006400; /* Match the darker green */
+    padding: 1rem 2.5rem;
+    font-size: 1.3rem;
+    text-decoration: none;
+    border-radius: 50px;
+    transition: transform 0.3s ease, background-color 0.3s ease;
     display: inline-block;
+    margin-bottom: 10px; /* Added hoverable spacing */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.2); /* Button shadow for prominence */
 }
 
 .hero .btn:hover {
-    background-color: #3CA935; /* Slightly darker green on hover */
+    background-color: #E0E0E0; /* Lighter hover state */
+    transform: scale(1.05); /* Slight hover scaling effect */
 }

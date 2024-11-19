@@ -117,7 +117,34 @@ async function getBiasAnalysisWithSlidingWindow(articleText, windowSize = 500, o
 
 
 export function handleFormSubmission() {
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
+        const carousel = document.querySelector('.carousel');
+        const prevBtn = document.querySelector('#prev-btn');
+        const nextBtn = document.querySelector('#next-btn');
+
+        let currentIndex = 0;
+
+        function updateCarousel(index) {
+            // Scroll to the corresponding testimonial
+            carousel.scrollTo({
+                left: carousel.offsetWidth * index,
+                behavior: 'smooth',
+            });
+        }
+
+        // Go to the previous testimonial
+        prevBtn.addEventListener('click', () => {
+            console.log("click")
+            currentIndex = (currentIndex === 0) ? carousel.children.length - 1 : currentIndex - 1;
+            updateCarousel(currentIndex);
+        });
+
+        // Go to the next testimonial
+        nextBtn.addEventListener('click', () => {
+            currentIndex = (currentIndex === carousel.children.length - 1) ? 0 : currentIndex + 1;
+            updateCarousel(currentIndex);
+        });
+
         const submitButton = document.getElementById('submitButton');
         const urlField = document.querySelector('.url-upload input');
         const errorMessage = document.getElementById('error-message');
@@ -127,7 +154,7 @@ export function handleFormSubmission() {
         const featuresSection = document.getElementById('features');
         const testimonialsSection = document.getElementById('testimonials');
 
-        submitButton.addEventListener('click', async function(event) {
+        submitButton.addEventListener('click', async function (event) {
             event.preventDefault();
             const url = urlField.value;
 
@@ -138,7 +165,7 @@ export function handleFormSubmission() {
             } else if (domainStatus === 2) {
                 errorMessage.textContent = 'The article URL must be from a trusted news source.';
             } else {
-                errorMessage.textContent = '';  // Clear any previous error messages
+                errorMessage.textContent = ''; // Clear any previous error messages
 
                 // Show loading section and hide form
                 submitSection.style.display = 'none';
@@ -154,73 +181,90 @@ export function handleFormSubmission() {
                     // Store article text in localStorage for retrieval on results.html
                     localStorage.setItem('articleText', articleText);
 
-                    // Pass the articleText to the new analysis function
-                    const analysisResults = await getBiasAnalysisWithSlidingWindow(articleText);
+                    let analysisResults;
+                    let gptAnalysisResults = null;
+                    let geminiAnalysisResults = null;
 
-                    const gptAnalysisResponse = await fetch('https://backend.newsbiascheck.net/analyze_bias_gpt4mini', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ text: articleText })
-                    });
-                    
-                    if (!gptAnalysisResponse.ok) {
-                        await new Promise(r => setTimeout(r, 5000));
-                        console.log("fail gpt4mini");
-                        throw new Error("Analysis failed");
+                    // Handle HuggingFace API (Sliding Window Analysis)
+                    try {
+                        analysisResults = await getBiasAnalysisWithSlidingWindow(articleText);
+                        if (analysisResults) {
+                            const analysisResultsString = JSON.stringify(analysisResults);
+                            localStorage.setItem('biasAnalysisResults', analysisResultsString);
+                        } else {
+                            throw new Error('Failed to perform sliding window analysis.');
+                        }
+                    } catch (error) {
+                        console.error('Error in sliding window analysis:', error.message);
+                        localStorage.setItem('errorMessage', `HuggingFace API Error: ${error.message}`);
+                        window.location.href = 'error.html';
+                        return;
                     }
-                    
-                    // Read as text first, then parse if needed
-                    const responseText = await gptAnalysisResponse.text();
-                    const gptAnalysisResults = { analysisText: responseText };
-                    console.log("Raw response text:", responseText);
 
+                    // Handle GPT-4 Mini API
+                    try {
+                        const gptAnalysisResponse = await fetch('https://backend.newsbiascheck.net/analyze_bias_gpt4mini', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ text: articleText })
+                        });
 
-                    const geminiAnalysisResponse = await fetch('https://backend.newsbiascheck.net/analyze_bias_gemini', {
-                        method: 'POST',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify({ text: articleText })
-                    });
-                    
-                    if (!geminiAnalysisResponse.ok) {
-                        await new Promise(r => setTimeout(r, 5000));
-                        console.log("fail gemini");
-                        throw new Error("Analysis failed");
+                        if (gptAnalysisResponse.ok) {
+                            gptAnalysisResults = await gptAnalysisResponse.text();
+                            localStorage.setItem('gptAnalysisResults', gptAnalysisResults);
+                        } else {
+                            throw new Error('GPT-4 Mini API failed.');
+                        }
+                    } catch (error) {
+                        console.error('Error in GPT-4 Mini API:', error.message);
+                        localStorage.setItem('errorMessage', `GPT-4 Mini API Error: ${error.message}`);
+                        window.location.href = 'error.html';
+                        return;
                     }
-                    
-                    // Read as text first, then parse if needed
-                    const geminiResponseText = await geminiAnalysisResponse.text();
-                    const geminiAnalysisResults = { analysisText: geminiResponseText };
-                    console.log("Raw response text gemini:", geminiResponseText);
-                    await new Promise(r => setTimeout(r, 15000));
 
+                    // Handle Gemini API
+                    try {
+                        const geminiAnalysisResponse = await fetch('https://backend.newsbiascheck.net/analyze_bias_gemini', {
+                            method: 'POST',
+                            headers: { 'Content-Type': 'application/json' },
+                            body: JSON.stringify({ text: articleText })
+                        });
 
-                    localStorage.setItem('geminiAnalysisResults', responseText);
-                    localStorage.setItem('gptAnalysisResults', geminiResponseText);
-                    await new Promise(r => setTimeout(r, 15000));
-                    
-                    //const gptAnalysisResults = await analyzeWithMultipleModels(articleText);
-                    //console.log(gptAnalysisResults)
-                    if (analysisResults) {
+                        if (geminiAnalysisResponse.ok) {
+                            geminiAnalysisResults = await geminiAnalysisResponse.text();
+                            localStorage.setItem('geminiAnalysisResults', geminiAnalysisResults);
+                        } else {
+                            throw new Error('Gemini API failed.');
+                        }
+                    } catch (error) {
+                        console.error('Error in Gemini API:', error.message);
+                        localStorage.setItem('errorMessage', `Gemini API Error: ${error.message}`);
+                        window.location.href = 'error.html';
+                        return;
+                    }
+
+                    // Save to Firestore Database
+                    try {
                         const analysisResultsString = JSON.stringify(analysisResults);
 
-                        const db = getDb();
+                        const db = getDb(); // Ensure this function returns your Firestore instance
                         await addDoc(collection(db, "Articles"), {
                             article_url: url,
                             submission_date: new Date(),
                             analysis_results: analysisResultsString
                         });
-
-                        // Store the analysis results in localStorage before redirecting
-                        localStorage.setItem('biasAnalysisResults', analysisResultsString);
-                        // Redirect to results page
-                        
-                        window.location.href = 'results.html';
-                    } else {
-                        localStorage.setItem('errorMessage', 'Failed to perform bias analysis. Please try again.');
+                    } catch (dbError) {
+                        console.error('Error adding document to Firestore:', dbError.message);
+                        localStorage.setItem('errorMessage', `Database Error: ${dbError.message}`);
                         window.location.href = 'error.html';
+                        return;
                     }
+
+                    // Redirect to results page if all analysis succeeds
+                    window.location.href = 'results.html';
                 } catch (error) {
-                    localStorage.setItem('errorMessage', `An error occurred: ${error.message}`);
+                    console.error('Error in processing submission:', error.message);
+                    localStorage.setItem('errorMessage', `An unexpected error occurred: ${error.message}`);
                     window.location.href = 'error.html';
                 }
             }

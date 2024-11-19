@@ -1,92 +1,123 @@
 /* Overall page styling */
 .about-section, .mission-section, .how-it-works-section, .technology-section, .team-section {
     max-width: 1000px;
-    margin: 2rem auto;
-    padding: 2rem;
+    margin: 3rem auto; /* Increased margin for better spacing */
+    padding: 3rem; /* More generous padding for content */
     background-color: #FFFFFF; /* White background for contrast */
-    border-radius: 8px;
-    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+    border-radius: 12px; /* Softer edges for a modern look */
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1); /* Enhanced shadow for depth */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Subtle hover effect */
+}
+
+.about-section:hover, .mission-section:hover, .how-it-works-section:hover, .technology-section:hover, .team-section:hover {
+    transform: translateY(-5px); /* Lift effect on hover */
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.15); /* Stronger shadow on hover */
 }
 
 /* Header styling for each section */
 .about-section h2, .mission-section h2, .how-it-works-section h2, .technology-section h2, .team-section h2 {
     font-family: 'Montserrat', sans-serif;
-    font-size: 2rem;
+    font-size: 2.5rem; /* Larger headings for emphasis */
     color: #25171A; /* Licorice color */
     text-align: center;
-    margin-bottom: 1rem;
+    margin-bottom: 2rem; /* Increased spacing below headings */
     font-weight: 700;
 }
 
 /* Paragraph styling */
 .about-section p, .mission-section p, .how-it-works-section p, .technology-section p, .team-section p {
     font-family: 'Lato', sans-serif;
-    font-size: 1rem;
-    line-height: 1.8;
+    font-size: 1.2rem; /* Slightly larger text for better readability */
+    line-height: 1.8; /* Improved line spacing */
     color: #333333; /* Dark text color for readability */
-    margin-bottom: 1rem;
-    text-align: justify;
+    margin-bottom: 1.5rem; /* Increased spacing between paragraphs */
+    text-align: justify; /* Justified text for a professional look */
 }
 
 /* Styling for lists in the technology section */
 .technology-section ul {
-    list-style-type: none;
+    list-style-type: none; /* Removed default bullet points */
     padding: 0;
     margin-top: 1rem;
 }
 
 .technology-section ul li {
-    margin-bottom: 1rem;
-    padding-left: 1.5rem;
+    margin-bottom: 1rem; /* Spacing between list items */
+    padding-left: 1.5rem; /* Indentation for bullet points */
     position: relative;
     font-family: 'Lato', sans-serif;
-    font-size: 1rem;
+    font-size: 1.2rem; /* Slightly larger text */
     color: #333;
 }
 
 .technology-section ul li::before {
-    content: '✔';
+    content: '✔'; /* Custom bullet point */
     color: #4CB944; /* Green color for bullet points */
     position: absolute;
     left: 0;
-    font-size: 1.2rem;
+    font-size: 1.5rem; /* Larger bullet size for prominence */
 }
 
 /* Team section styling */
 .team-list {
     display: flex;
     flex-wrap: wrap;
-    justify-content: space-around;
-    gap: 1.5rem;
+    justify-content: center; /* Center team members on the page */
+    gap: 2rem; /* Increased spacing between team members */
 }
 
 .team-member {
     background-color: #F7F7FA; /* Light background for cards */
-    width: 220px;
-    padding: 1rem;
-    border-radius: 8px;
-    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+    width: 240px; /* Slightly larger cards for better visibility */
+    padding: 2rem; /* Balanced padding */
+    border-radius: 12px; /* Softer corners for a modern look */
+    box-shadow: 0px 6px 12px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
     text-align: center;
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth hover effect */
+}
+
+.team-member:hover {
+    transform: translateY(-5px); /* Lift effect on hover */
+    box-shadow: 0px 8px 16px rgba(0, 0, 0, 0.15); /* Stronger shadow on hover */
 }
 
 .team-member img {
     width: 100%;
     height: auto;
     border-radius: 50%; /* Circular profile image */
-    margin-bottom: 1rem;
+    margin-bottom: 1.5rem; /* Increased spacing below the image */
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow for the image */
 }
 
 .team-member h3 {
     font-family: 'Montserrat', sans-serif;
-    font-size: 1.2rem;
+    font-size: 1.5rem; /* Slightly larger name text */
     color: #25171A;
-    margin-bottom: 0.5rem;
+    margin-bottom: 0.75rem; /* Increased spacing below the name */
 }
 
 .team-member p {
     font-family: 'Lato', sans-serif;
-    font-size: 1rem;
+    font-size: 1.1rem; /* Slightly larger description text */
     color: #333;
+    line-height: 1.5; /* Improved line spacing */
 }
 
+/* Responsive Adjustments */
+@media (max-width: 768px) {
+    .about-section, .mission-section, .how-it-works-section, .technology-section, .team-section {
+        padding: 2rem; /* Adjust padding for smaller screens */
+    }
 
+    .team-member {
+        width: 100%; /* Full width for team cards on smaller screens */
+    }
+
+    .about-section h2, .mission-section h2, .how-it-works-section h2, .technology-section h2, .team-section h2 {
+        font-size: 2rem; /* Adjust heading size for smaller screens */
+    }
+
+    .about-section p, .mission-section p, .how-it-works-section p, .technology-section p, .team-section p {
+        font-size: 1rem; /* Adjust paragraph size for smaller screens */
+    }
+}
