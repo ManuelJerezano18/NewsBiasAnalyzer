@@ -1,5 +1,6 @@
 /* Full-width background for the analysis section */
 .analysis-section {
+    max-width: 1000px;
     background: #F7F5FB; /* Ghost White */
     padding: 2rem 0;
     min-height: calc(100vh - 200px); /* Adjust based on header and footer height */
