@@ -4,14 +4,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>News Bias Check</title>
-    <link rel="stylesheet" href="css/globals.css">
-    <link rel="stylesheet" href="css/header.css">
-    <link rel="stylesheet" href="css/hero.css">
-    <link rel="stylesheet" href="css/features.css">
-    <link rel="stylesheet" href="css/submit-article.css">
-    <link rel="stylesheet" href="css/footer.css">
-    <link rel="stylesheet" href="css/testimonials.css">
-    <link rel="stylesheet" href="css/loading.css">
+    <link rel="stylesheet" href="css/styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
 </head>
@@ -104,20 +97,32 @@
                 <form id="articleForm" action="#" method="post">
                     <div class="url-upload">
                         <i class="fas fa-upload"></i>
-                        <input type="url" placeholder="Paste the article URL or text here..." required>
+                        <input type="url" id="articleUrl" name="articleUrl" placeholder="Paste the article URL or text here..." required>
                     </div>
+                    
+                    <!-- Category Selection -->
+                    <label for="articleCategory">Category:</label>
+                    <select id="articleCategory" name="articleCategory" required>
+                        <option value="Politics">Politics</option>
+                        <option value="Technology">Technology</option>
+                        <option value="Health">Health</option>
+                        <option value="Science">Science</option>
+                        <option value="Business">Business</option>
+                        <option value="Sports">Sports</option>
+                        <option value="Other">Other</option>
+                    </select>
+
                     <div id="error-message" style="color:red;"></div> <!-- Error message placeholder -->
                     <button id="submitButton" type="submit" class="btn-submit">Submit Article For Analysis</button>
                 </form>
             </div>
         </section>
-        <!-- Divider -->
-        <div class="section-divider"></div>
+
         <!-- Testimonials Section -->
-        <section id="testimonials" class="full-width-section testimonials-section">
+        <section id="testimonials" class="full-width-section testimonials-section" style="background-color: #FFFFFF;">
             <div class="container">
                 <h2>What Our Users Say</h2>
-                <div class="carousel">
+                <div class="testimonial-list">
                     <div class="testimonial">
                         <p>"This tool is amazing for detecting bias in the articles I read. It has really improved my media literacy!"</p>
                         <h4>- User A</h4>
@@ -130,25 +135,12 @@
                         <p>"The bias visualization graphs are so easy to understand and help me stay informed."</p>
                         <h4>- User C</h4>
                     </div>
-                    <div class="testimonial">
-                        <p>"A must-have tool for anyone who reads news online and wants to avoid biased information."</p>
-                        <h4>- User D</h4>
-                    </div>
-                    <div class="testimonial">
-                        <p>"This platform makes it super easy to compare how different outlets report on the same topic."</p>
-                        <h4>- User E</h4>
-                    </div>
-                </div>
-                <div class="carousel-controls">
-                    <button id="prev-btn" class="btn-carousel">❮</button>
-                    <button id="next-btn" class="btn-carousel">❯</button>
                 </div>
                 <div class="cta-button">
                     <a href="#submit" class="btn-fix">Submit Your Article</a>
                 </div>
             </div>
         </section>
-        
         
         <!-- Footer -->
         <footer>

@@ -4,7 +4,7 @@ document.addEventListener('DOMContentLoaded', function() {
     const downloadPdfButton = document.getElementById('downloadPdfButton');
     const downloadTxtButton = document.getElementById('downloadTxtButton');
     const articleText = localStorage.getItem('articleText');
-    const hfBiasAnalysis = JSON.parse(localStorage.getItem('biasAnalysisResults'));
+    const hfBiasAnalysis = JSON.parse(localStorage.getItem('biasAnalysisResult'));
     const gptAnalysisResults = localStorage.getItem('gptAnalysisResults');
     const geminiAnalysisResults = localStorage.getItem('geminiAnalysisResults');
     let currentModel = 'huggingface';

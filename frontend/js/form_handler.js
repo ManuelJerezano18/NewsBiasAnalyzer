@@ -1,4 +1,5 @@
 import { getDb } from './firebase.js';
+import { getAuth } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js";
 import { collection, addDoc } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
 
 // Valid domains list
@@ -89,8 +90,6 @@ async function getBiasAnalysisWithSlidingWindow(articleText, windowSize = 500, o
                 console.error("Error in API call:", result.error);
                 return null; // Handle error here
             }
-
-            // Return result for each chunk
             return result;
         })
         .catch(error => {
@@ -102,51 +101,21 @@ async function getBiasAnalysisWithSlidingWindow(articleText, windowSize = 500, o
 
         // Move the window forward, with overlap
         start += windowSize - overlap;
-        //console.log("chunk", chunk)
     }
 
-    
     // Wait for all API calls to resolve
     const results = await Promise.all(promises);
-    //await new Promise(r => setTimeout(r, 5000));
-    console.log("RESULTS", results)
+    console.log("Bias analysis results:", results);
     return results;
 }
 
-
-
-
+// Handle form submission
+// Function to handle form submission
 export function handleFormSubmission() {
-    document.addEventListener('DOMContentLoaded', function () {
-        const carousel = document.querySelector('.carousel');
-        const prevBtn = document.querySelector('#prev-btn');
-        const nextBtn = document.querySelector('#next-btn');
-
-        let currentIndex = 0;
-
-        function updateCarousel(index) {
-            // Scroll to the corresponding testimonial
-            carousel.scrollTo({
-                left: carousel.offsetWidth * index,
-                behavior: 'smooth',
-            });
-        }
-
-        // Go to the previous testimonial
-        prevBtn.addEventListener('click', () => {
-            console.log("click")
-            currentIndex = (currentIndex === 0) ? carousel.children.length - 1 : currentIndex - 1;
-            updateCarousel(currentIndex);
-        });
-
-        // Go to the next testimonial
-        nextBtn.addEventListener('click', () => {
-            currentIndex = (currentIndex === carousel.children.length - 1) ? 0 : currentIndex + 1;
-            updateCarousel(currentIndex);
-        });
-
+    document.addEventListener('DOMContentLoaded', function() {
         const submitButton = document.getElementById('submitButton');
         const urlField = document.querySelector('.url-upload input');
+        const categoryField = document.getElementById('articleCategory'); // New category field
         const errorMessage = document.getElementById('error-message');
         const submitSection = document.getElementById('submit');
         const loadingSection = document.getElementById('loading');
@@ -154,119 +123,75 @@ export function handleFormSubmission() {
         const featuresSection = document.getElementById('features');
         const testimonialsSection = document.getElementById('testimonials');
 
-        submitButton.addEventListener('click', async function (event) {
+        // Initialize Firebase Auth
+        const auth = getAuth();
+
+        submitButton.addEventListener('click', async function(event) {
             event.preventDefault();
-            const url = urlField.value;
+            const user = auth.currentUser;
 
-            const domainStatus = isValidDomain(url);
+            if (user) {
+                const url = urlField.value;
+                const category = categoryField.value; // Get selected category
+                const domainStatus = isValidDomain(url);
 
-            if (domainStatus === 1) {
-                errorMessage.textContent = 'The URL format is invalid. Please enter a correct URL.';
-            } else if (domainStatus === 2) {
-                errorMessage.textContent = 'The article URL must be from a trusted news source.';
-            } else {
-                errorMessage.textContent = ''; // Clear any previous error messages
+                if (domainStatus === 1) {
+                    errorMessage.textContent = 'The URL format is invalid. Please enter a correct URL.';
+                } else if (domainStatus === 2) {
+                    errorMessage.textContent = 'The article URL must be from a trusted news source.';
+                } else {
+                    errorMessage.textContent = '';  // Clear any previous error messages
 
-                // Show loading section and hide form
-                submitSection.style.display = 'none';
-                loadingSection.style.display = 'block';
-                homeSection.style.display = 'none';
-                featuresSection.style.display = 'none';
-                testimonialsSection.style.display = 'none';
+                    // Show loading section and hide form
+                    submitSection.style.display = 'none';
+                    loadingSection.style.display = 'block';
+                    homeSection.style.display = 'none';
+                    featuresSection.style.display = 'none';
+                    testimonialsSection.style.display = 'none';
 
-                try {
-                    const article = await callScrapingAPI(url);
-                    const articleText = article.text;
-
-                    // Store article text in localStorage for retrieval on results.html
-                    localStorage.setItem('articleText', articleText);
-
-                    let analysisResults;
-                    let gptAnalysisResults = null;
-                    let geminiAnalysisResults = null;
-
-                    // Handle HuggingFace API (Sliding Window Analysis)
                     try {
-                        analysisResults = await getBiasAnalysisWithSlidingWindow(articleText);
+                        const article = await callScrapingAPI(url);
+                        const articleText = article.text;
+                        const articleTitle = article.title || 'Untitled'; // Extract title if available
+
+                        // Store article text in localStorage for retrieval on results.html
+                        localStorage.setItem('articleText', articleText);
+
+                        // Perform bias analysis
+                        const analysisResults = await getBiasAnalysisWithSlidingWindow(articleText);
+                        const biasScore = analysisResults ? analysisResults.overallBiasScore || 'N/A' : 'N/A';
+
                         if (analysisResults) {
                             const analysisResultsString = JSON.stringify(analysisResults);
+
+                            const db = getDb();
+                            await addDoc(collection(db, `Users/${user.uid}/Articles`), {
+                                article_title: articleTitle,
+                                article_url: url,
+                                category: category, // Store category in Firebase
+                                submission_date: new Date(),
+                                bias_score: biasScore,
+                                analysis_results: analysisResultsString
+                            });
+
+                            // Store the analysis results in localStorage before redirecting
                             localStorage.setItem('biasAnalysisResults', analysisResultsString);
+
+                            // Redirect to results page
+                            window.location.href = 'results.html';
                         } else {
-                            throw new Error('Failed to perform sliding window analysis.');
+                            localStorage.setItem('errorMessage', 'Failed to perform bias analysis. Please try again.');
+                            window.location.href = 'error.html';
                         }
                     } catch (error) {
-                        console.error('Error in sliding window analysis:', error.message);
-                        localStorage.setItem('errorMessage', `HuggingFace API Error: ${error.message}`);
+                        localStorage.setItem('errorMessage', `An error occurred: ${error.message}`);
                         window.location.href = 'error.html';
-                        return;
                     }
-
-                    // Handle GPT-4 Mini API
-                    try {
-                        const gptAnalysisResponse = await fetch('https://backend.newsbiascheck.net/analyze_bias_gpt4mini', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ text: articleText })
-                        });
-
-                        if (gptAnalysisResponse.ok) {
-                            gptAnalysisResults = await gptAnalysisResponse.text();
-                            localStorage.setItem('gptAnalysisResults', gptAnalysisResults);
-                        } else {
-                            throw new Error('GPT-4 Mini API failed.');
-                        }
-                    } catch (error) {
-                        console.error('Error in GPT-4 Mini API:', error.message);
-                        localStorage.setItem('errorMessage', `GPT-4 Mini API Error: ${error.message}`);
-                        window.location.href = 'error.html';
-                        return;
-                    }
-
-                    // Handle Gemini API
-                    try {
-                        const geminiAnalysisResponse = await fetch('https://backend.newsbiascheck.net/analyze_bias_gemini', {
-                            method: 'POST',
-                            headers: { 'Content-Type': 'application/json' },
-                            body: JSON.stringify({ text: articleText })
-                        });
-
-                        if (geminiAnalysisResponse.ok) {
-                            geminiAnalysisResults = await geminiAnalysisResponse.text();
-                            localStorage.setItem('geminiAnalysisResults', geminiAnalysisResults);
-                        } else {
-                            throw new Error('Gemini API failed.');
-                        }
-                    } catch (error) {
-                        console.error('Error in Gemini API:', error.message);
-                        localStorage.setItem('errorMessage', `Gemini API Error: ${error.message}`);
-                        window.location.href = 'error.html';
-                        return;
-                    }
-
-                    // Save to Firestore Database
-                    try {
-                        const analysisResultsString = JSON.stringify(analysisResults);
-
-                        const db = getDb(); // Ensure this function returns your Firestore instance
-                        await addDoc(collection(db, "Articles"), {
-                            article_url: url,
-                            submission_date: new Date(),
-                            analysis_results: analysisResultsString
-                        });
-                    } catch (dbError) {
-                        console.error('Error adding document to Firestore:', dbError.message);
-                        localStorage.setItem('errorMessage', `Database Error: ${dbError.message}`);
-                        window.location.href = 'error.html';
-                        return;
-                    }
-
-                    // Redirect to results page if all analysis succeeds
-                    window.location.href = 'results.html';
-                } catch (error) {
-                    console.error('Error in processing submission:', error.message);
-                    localStorage.setItem('errorMessage', `An unexpected error occurred: ${error.message}`);
-                    window.location.href = 'error.html';
                 }
+            } else {
+                console.error("User is not authenticated");
+                alert("Please sign in to submit an article.");
+                window.location.href = 'signin.html'; // Redirect to sign-in page if not authenticated
             }
         });
     });
