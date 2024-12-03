@@ -1,0 +1,183 @@
+/* Import Google Fonts */
+@import url('https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Montserrat:wght@400;700&display=swap');
+@import url('https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css');
+
+/* General Reset */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: 'Lato', sans-serif;
+    line-height: 1.6;
+    color: #25171A; /* Licorice */
+    background-color: #F7F5FB; /* Ghost White */
+}
+
+.container {
+    width: 100%;
+    margin: 0 auto;
+    overflow: hidden;
+}
+
+/* Top Bar Styling */
+header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #020122; /* Oxford Blue */
+    color: #F7F5FB; /* Ghost White */
+    padding: 0.8rem 2rem;
+    width: 100%;
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+}
+
+header h1 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.8rem;
+    margin-right: 2rem;
+}
+
+header nav ul {
+    list-style: none;
+    display: flex;
+    align-items: center;
+    margin-left: auto;
+}
+
+header nav ul li {
+    margin-left: 20px;
+}
+
+header nav ul li a {
+    color: #F7F5FB; /* Ghost White */
+    text-decoration: none;
+    font-family: 'Lato', sans-serif;
+    padding: 0.5rem 1rem;
+}
+
+header .search-bar {
+    display: flex;
+    align-items: center;
+    background-color: #E5E5E5; /* Soft Stone Gray */
+    padding: 0.3rem 1rem;
+    border-radius: 20px;
+    margin-right: auto;
+}
+
+header .search-bar i {
+    margin-right: 8px;
+    color: #333;
+}
+
+header .search-bar input {
+    border: none;
+    background: transparent;
+    outline: none;
+    font-family: 'Lato', sans-serif;
+    font-size: 1rem;
+}
+
+/* Hero Section */
+.hero {
+    background: #E5E5E5; /* Soft Stone Gray */
+    padding: 2rem 0;
+    text-align: center;
+    border-bottom: 5px solid #D3D3D3; /* Divider between sections */
+}
+
+.hero h2 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 2rem;
+    margin-bottom: 0.5rem;
+    color: #25171A; /* Licorice */
+}
+
+.hero p {
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    font-family: 'Lato', sans-serif;
+}
+
+.hero .btn {
+    background: #4CB944; /* Dark Pastel Green */
+    color: #F7F5FB; /* Ghost White */
+    padding: 0.8rem 1.5rem;
+    text-decoration: none;
+    border-radius: 2vmin;
+    font-family: 'Lato', sans-serif;
+    display: inline-block;
+}
+
+.hero .btn:hover {
+    background-color: #3CA935; /* Slightly darker green on hover */
+}
+
+/* Results Section */
+.results-container {
+    max-width: 1200px;
+    margin: 2rem auto;
+    background: #FFFFFF;
+    padding: 2rem;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.results-container h2 {
+    font-family: 'Montserrat', sans-serif;
+    font-size: 1.8rem;
+    margin-bottom: 1rem;
+    color: #25171A; /* Licorice */
+}
+
+.results-container p {
+    font-family: 'Lato', sans-serif;
+    font-size: 1rem;
+    margin-bottom: 1rem;
+    line-height: 1.8;
+}
+
+/* Report Download Buttons */
+.report-buttons {
+    display: flex;
+    justify-content: center;
+    margin-top: 1rem;
+}
+
+.report-buttons button {
+    background: #4CB944; /* Dark Pastel Green */
+    color: #FFF;
+    padding: 0.8rem 1.5rem;
+    border: none;
+    border-radius: 8px;
+    font-size: 1rem;
+    cursor: pointer;
+    margin: 0 0.5rem;
+}
+
+.report-buttons button:hover {
+    background: #3CA935;
+}
+
+/* Footer Section */
+footer {
+    background: #020122; /* Oxford Blue */
+    color: #F7F5FB; /* Ghost White */
+    text-align: center;
+    padding: 1.5rem 0;
+}
+
+footer a {
+    color: #F7F5FB;
+    text-decoration: none;
+    margin: 0 0.5rem;
+    font-family: 'Lato', sans-serif;
+}
+
+footer a:hover {
+    color: #4CB944; /* Green on hover */
+}

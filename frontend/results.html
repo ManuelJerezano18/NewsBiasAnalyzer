@@ -4,10 +4,13 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Article Analysis - News Bias Check</title>
-    <link rel="stylesheet" href="css/results.css">
+    <!-- Corrected CSS File Link -->
+    <link rel="stylesheet" href="css/results_page.css">
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.4.0/jspdf.umd.min.js"></script> <!-- Added jsPDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.70/pdfmake.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/pdfmake/0.1.70/vfs_fonts.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 </head>
 <body>
     <header>
@@ -22,9 +25,10 @@
                     <ul>
                         <li><a href="index.html">Home</a></li>
                         <li><a href="how-it-works.html">Features</a></li>
-                        <li><a href="#submit">Submit Article</a></li>
+                        <li><a href="submit.html">Submit Article</a></li>
+                        <li><a href="#testimonials">Testimonials</a></li>
                         <li><a href="profile.html">Profile</a></li>
-                        <li><button id="signOutButton" class="nav-signout">Sign Out</button></li>
+                        <li><a href="#" id="signOutButton">Sign Out</a></li>
                     </ul>
                 </nav>
             </div>
@@ -34,14 +38,14 @@
     <section class="analysis-section">
         <!-- Toggle Button for Model Switching -->
         <div class="model-toggle">
-            <button id="toggleModelButton">Switch to GPT-4 Mini</button>
+            <button id="toggleModelButton" class="btn">Switch to GPT-4 Mini</button>
         </div>
 
         <!-- Container for the article chunks and their corresponding analysis -->
-        <div id="article-container">
+        <div id="article-container" class="results-container">
             <!-- Article chunks will be displayed here -->
         </div>
-        <div id="analysis-container">
+        <div id="analysis-container" class="results-container">
             <!-- Analysis results will be displayed here -->
         </div>
 
@@ -50,13 +54,18 @@
             <canvas id="sentimentChart" width="400" height="400"></canvas>
             <canvas id="topicChart" width="400" height="400"></canvas>
             <canvas id="politicalSpectrumChart" width="400" height="400"></canvas>
+            <!-- New Bar Graph for Bias Analysis -->
+            <div class="bias-graph">
+                <h3>Bias Analysis Graph</h3>
+                <canvas id="biasBarChart" width="600" height="400"></canvas>
+            </div>
         </div>
     </section>
 
     <!-- Add buttons for report download -->
     <section class="report-download">
-        <button id="downloadPdfButton">Download PDF Report</button>
-        <button id="downloadTxtButton">Download Text Report</button>
+        <button id="downloadPdfButton" class="btn">Download PDF Report</button>
+        <button id="downloadTxtButton" class="btn">Download Text Report</button>
     </section>
 
     <!-- Footer -->
@@ -76,5 +85,33 @@
     </footer>
 
     <script type="module" src="js/results.js"></script>
+    <script>
+        // Initialize the Bias Bar Chart
+        document.addEventListener('DOMContentLoaded', () => {
+            const ctx = document.getElementById('biasBarChart').getContext('2d');
+
+            new Chart(ctx, {
+                type: 'bar',
+                data: {
+                    labels: ['Non-Biased', 'Biased'],
+                    datasets: [{
+                        label: 'Bias Analysis',
+                        data: [85, 15], // Placeholder data
+                        backgroundColor: ['#4CAF50', '#F44336'], // Colors for Non-Biased and Biased
+                        borderColor: ['#388E3C', '#D32F2F'],
+                        borderWidth: 1
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    scales: {
+                        y: {
+                            beginAtZero: true
+                        }
+                    }
+                }
+            });
+        });
+    </script>
 </body>
 </html>

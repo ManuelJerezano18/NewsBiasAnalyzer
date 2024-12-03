@@ -7,6 +7,61 @@
     <link rel="stylesheet" href="css/styles.css">
     <link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&family=Montserrat:wght@400;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <style>
+        /* Universal Button Style */
+        .rounded-button {
+            background-color: navy !important;
+            color: white !important;
+            border: none;
+            border-radius: 25px;
+            padding: 0.5rem 1.5rem;
+            font-size: 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .rounded-button:hover {
+            background-color: grey !important;
+            transform: scale(1.05);
+        }
+
+        /* Delete Button */
+        .delete-btn {
+            background-color: navy;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .delete-btn:hover {
+            background-color: grey;
+            transform: scale(1.05);
+        }
+
+        /* Profile Picture Upload Button */
+        #profile-picture-input {
+            display: none; /* Hide the file input */
+        }
+
+        .upload-btn {
+            background-color: navy;
+            color: white;
+            border: none;
+            border-radius: 25px;
+            padding: 0.5rem 1rem;
+            cursor: pointer;
+            margin-top: 1rem;
+            transition: background-color 0.3s ease, transform 0.2s ease;
+        }
+
+        .upload-btn:hover {
+            background-color: grey;
+            transform: scale(1.05);
+        }
+    </style>
 </head>
 <body>
     <header>
@@ -37,8 +92,10 @@
             <div class="profile-content">
                 <div class="profile-info">
                     <div class="profile-picture">
-                        <i class="fas fa-user-circle"></i>
-                    </div>
+                        <img id="profile-picture-img" src="default-profile.png" alt="Profile Picture">
+                        <label for="profile-picture-input" class="upload-btn">Choose File</label>
+                        <input type="file" id="profile-picture-input" accept="image/*">
+                    </div>                                
                     <div class="profile-details">
                         <h2 id="user-name">User Name</h2>
                         <p><strong>Email:</strong> <span id="user-email">example@example.com</span></p>
@@ -46,7 +103,7 @@
                         <p><strong>Website:</strong> <span id="user-website">N/A</span></p>
                         <p><strong>Birthdate:</strong> <span id="user-birthdate">N/A</span></p>
                         
-                        <button id="edit-profile-button">
+                        <button id="edit-profile-button" class="rounded-button">
                             <i class="fas fa-pen"></i> Edit
                         </button>
                     </div>
@@ -67,7 +124,7 @@
                         <label for="edit-birthdate">Birthdate:</label>
                         <input type="date" id="edit-birthdate">
     
-                        <button id="save-profile-button">Save</button>
+                        <button id="save-profile-button" class="rounded-button">Save</button>
                     </div>
                 </div>
             </div>
@@ -80,16 +137,24 @@
         <table class="article-history-table">
             <thead>
                 <tr>
-            <th>Name</th>
-            <th>Website</th>
-            <th>Category</th> 
-            <th>Date</th>
-            <th>Bias Score</th>
-            <th>Action</th>
+                    <th>Name</th>
+                    <th>Website</th>
+                    <th>Category</th> 
+                    <th>Date</th>
+                    <th>Bias Score</th>
+                    <th>Action</th>
                 </tr>
             </thead>
             <tbody id="article-history-body">
-                <!-- Data will be dynamically populated -->
+                <!-- Dynamically populated -->
+                <tr>
+                    <td>Sample Article</td>
+                    <td>example.com</td>
+                    <td>Politics</td>
+                    <td>11/20/2024</td>
+                    <td>65%</td>
+                    <td><button class="delete-btn">Delete</button></td>
+                </tr>
             </tbody>
         </table>
     </section>

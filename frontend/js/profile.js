@@ -1,6 +1,7 @@
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
 import { getAuth, onAuthStateChanged, signOut } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js";
 import { getFirestore, doc, getDoc, setDoc, collection, getDocs, deleteDoc } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
+import { query, orderBy } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-firestore.js";
 
 // Firebase configuration
 const firebaseConfig = {
@@ -24,21 +25,95 @@ document.addEventListener('DOMContentLoaded', () => {
     const userPhoneElement = document.getElementById('user-phone');
     const userWebsiteElement = document.getElementById('user-website');
     const userBirthdateElement = document.getElementById('user-birthdate');
-
+    const profilePictureInput = document.getElementById('profile-picture-input');
+    const profilePictureImg = document.getElementById('profile-picture-img');
     const editProfileButton = document.getElementById('edit-profile-button');
     const editProfileForm = document.getElementById('edit-profile-form');
     const saveProfileButton = document.getElementById('save-profile-button');
 
+    /**
+     * Centralized function to create or update a user's Firestore document.
+     * Merges new data with the existing document.
+     */
+    async function createOrUpdateUserDocument(userId, data) {
+        try {
+            const userDocRef = doc(db, `Users/${userId}`);
+            await setDoc(userDocRef, data, { merge: true });
+            console.log("User document created/updated successfully:", data);
+        } catch (error) {
+            console.error("Error creating/updating user document:", error);
+        }
+    }
+
+    /**
+     * Function to fetch and display the user's article history.
+     */
+    async function fetchArticleHistory(userId) {
+        try {
+            const userArticlesRef = collection(db, `Users/${userId}/Articles`);
+            const querySnapshot = await getDocs(query(userArticlesRef, orderBy('submission_date', 'desc')));
+            console.log('Articles fetched:', querySnapshot.size);
+    
+            articleHistoryBody.innerHTML = ''; // Clear any existing data
+            if (querySnapshot.empty) {
+                articleHistoryBody.innerHTML = `
+                    <tr>
+                        <td colspan="6" style="text-align: center;">No articles submitted yet.</td>
+                    </tr>
+                `;
+            } else {
+                querySnapshot.forEach((doc) => {
+                    const data = doc.data();
+                    console.log('Article data:', data);
+                    const row = `
+                        <tr id="article-${doc.id}">
+                            <td>${data.article_title || 'Untitled'}</td>
+                            <td><a href="${data.article_url}" target="_blank">${new URL(data.article_url).hostname}</a></td>
+                            <td>${data.category || 'N/A'}</td>
+                            <td>${data.submission_date?.toDate().toLocaleDateString() || 'N/A'}</td>
+                            <td>${data.bias_score !== undefined ? data.bias_score : 'N/A'}</td>
+                            <td><button class="delete-btn" data-id="${doc.id}">Delete</button></td>
+                        </tr>
+                    `;
+                    articleHistoryBody.innerHTML += row;
+                });
+    
+                // Add event listeners for delete buttons
+                document.querySelectorAll('.delete-btn').forEach((button) => {
+                    button.addEventListener('click', async (event) => {
+                        const articleId = event.target.getAttribute('data-id');
+                        await deleteArticle(userId, articleId);
+                    });
+                });
+            }
+        } catch (error) {
+            console.error('Error fetching article history:', error);
+            articleHistoryBody.innerHTML = `
+                <tr>
+                    <td colspan="6" style="text-align: center; color: red;">Failed to load article history.</td>
+                </tr>
+            `;
+        }
+    }
+
+    // Load profile picture from localStorage
+    const savedProfilePicture = localStorage.getItem("profilePicture");
+    if (savedProfilePicture) {
+        profilePictureImg.src = savedProfilePicture;
+    }
+
     onAuthStateChanged(auth, async (user) => {
         if (user) {
             console.log('User authenticated:', user.email);
+
+            // Set default values for the user information
             userNameElement.textContent = user.displayName || 'User';
             userEmailElement.textContent = user.email;
 
             try {
-                // Fetch user data
                 const userDocRef = doc(db, `Users/${user.uid}`);
                 const userDoc = await getDoc(userDocRef);
+
                 if (userDoc.exists()) {
                     const userData = userDoc.data();
                     console.log('User data:', userData);
@@ -48,53 +123,20 @@ document.addEventListener('DOMContentLoaded', () => {
                     userWebsiteElement.textContent = userData.website || 'N/A';
                     userBirthdateElement.textContent = userData.birthdate || 'N/A';
                 } else {
-                    console.log('No user data found.');
+                    console.log('No user data found. Creating a new document.');
+                    await createOrUpdateUserDocument(user.uid, {
+                        name: "User Name",
+                        email: user.email,
+                        phone: "N/A",
+                        website: "N/A",
+                        birthdate: "N/A"
+                    });
                 }
 
                 // Fetch article history
-                const userArticlesRef = collection(db, `Users/${user.uid}/Articles`);
-                const querySnapshot = await getDocs(userArticlesRef);
-                console.log('Articles fetched:', querySnapshot.size);
-
-                articleHistoryBody.innerHTML = ''; // Clear any existing data
-                if (querySnapshot.empty) {
-                    articleHistoryBody.innerHTML = `
-                        <tr>
-                            <td colspan="6" style="text-align: center;">No articles submitted yet.</td>
-                        </tr>
-                    `;
-                } else {
-                    querySnapshot.forEach((doc) => {
-                        const data = doc.data();
-                        console.log('Article data:', data);
-                        const row = `
-                            <tr id="article-${doc.id}">
-                                <td>${data.article_title || 'Untitled'}</td>
-                                <td><a href="${data.article_url}" target="_blank">${new URL(data.article_url).hostname}</a></td>
-                                <td>${data.category || 'N/A'}</td> <!-- Display category -->
-                                <td>${data.submission_date?.toDate().toLocaleDateString() || 'N/A'}</td>
-                                <td>${data.bias_score !== undefined ? data.bias_score : 'N/A'}</td>
-                                <td><button class="delete-btn" data-id="${doc.id}">Delete</button></td>
-                            </tr>
-                        `;
-                        articleHistoryBody.innerHTML += row;
-                    });
-
-                    // Add event listeners for delete buttons
-                    document.querySelectorAll('.delete-btn').forEach((button) => {
-                        button.addEventListener('click', async (event) => {
-                            const articleId = event.target.getAttribute('data-id');
-                            await deleteArticle(user.uid, articleId);
-                        });
-                    });
-                }
+                await fetchArticleHistory(user.uid);
             } catch (error) {
-                console.error('Error fetching article data:', error);
-                articleHistoryBody.innerHTML = `
-                    <tr>
-                        <td colspan="6" style="text-align: center; color: red;">Failed to load article history.</td>
-                    </tr>
-                `;
+                console.error('Error fetching or creating user data:', error);
             }
         } else {
             console.error('User not authenticated');
@@ -102,16 +144,18 @@ document.addEventListener('DOMContentLoaded', () => {
         }
     });
 
-    editProfileButton.addEventListener('click', () => {
-        editProfileForm.style.display = 'block';
-        editProfileButton.style.display = 'none';
-
-        // Prefill form with current data
-        document.getElementById('edit-name').value = userNameElement.textContent;
-        document.getElementById('edit-email').value = userEmailElement.textContent;
-        document.getElementById('edit-phone').value = userPhoneElement.textContent !== 'N/A' ? userPhoneElement.textContent : '';
-        document.getElementById('edit-website').value = userWebsiteElement.textContent !== 'N/A' ? userWebsiteElement.textContent : '';
-        document.getElementById('edit-birthdate').value = userBirthdateElement.textContent !== 'N/A' ? userBirthdateElement.textContent : '';
+    // Save profile picture to localStorage and update UI
+    profilePictureInput.addEventListener("change", (event) => {
+        const file = event.target.files[0];
+        if (file) {
+            const reader = new FileReader();
+            reader.onload = () => {
+                const imageDataUrl = reader.result;
+                localStorage.setItem("profilePicture", imageDataUrl);
+                profilePictureImg.src = imageDataUrl;
+            };
+            reader.readAsDataURL(file);
+        }
     });
 
     saveProfileButton.addEventListener('click', async () => {
@@ -123,30 +167,21 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const user = auth.currentUser;
             if (user) {
-                const userDocRef = doc(db, `Users/${user.uid}`);
-                await setDoc(userDocRef, {
-                    name,
-                    phone,
-                    website,
-                    birthdate
-                }, { merge: true });
+                await createOrUpdateUserDocument(user.uid, { name, phone, website, birthdate });
+                console.log("User profile updated successfully.");
 
-                console.log('User data saved successfully');
-
-                // Update UI
                 userNameElement.textContent = name || 'User Name';
                 userPhoneElement.textContent = phone || 'N/A';
                 userWebsiteElement.textContent = website || 'N/A';
                 userBirthdateElement.textContent = birthdate || 'N/A';
 
-                // Hide form and show button
                 editProfileForm.style.display = 'none';
                 editProfileButton.style.display = 'inline';
             } else {
-                console.error('User not authenticated');
+                console.error("User not authenticated");
             }
         } catch (error) {
-            console.error('Error saving user data:', error);
+            console.error("Error saving user data:", error);
         }
     });
 
@@ -157,7 +192,6 @@ document.addEventListener('DOMContentLoaded', () => {
             console.log(`Article ${articleId} deleted successfully.`);
         } catch (error) {
             console.error(`Error deleting article ${articleId}:`, error);
-            alert('Failed to delete the article. Please try again.');
         }
     }
 });

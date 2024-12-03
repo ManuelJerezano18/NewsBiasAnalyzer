@@ -1,4 +1,4 @@
-document.addEventListener('DOMContentLoaded', function() {
+document.addEventListener('DOMContentLoaded', function () {
     const articleContainer = document.getElementById('article-container');
     const toggleButton = document.getElementById('toggleModelButton');
     const downloadPdfButton = document.getElementById('downloadPdfButton');
@@ -7,18 +7,31 @@ document.addEventListener('DOMContentLoaded', function() {
     const hfBiasAnalysis = JSON.parse(localStorage.getItem('biasAnalysisResult'));
     const gptAnalysisResults = localStorage.getItem('gptAnalysisResults');
     const geminiAnalysisResults = localStorage.getItem('geminiAnalysisResults');
+    const userEmail = localStorage.getItem('userEmail') || 'Unknown';
+    const articleURL = localStorage.getItem('articleURL') || 'N/A';
     let currentModel = 'huggingface';
+
+    // Chart.js initialization variables
+    const biasBarChartCanvas = document.createElement('canvas');
+    biasBarChartCanvas.id = 'biasBarChart';
+    biasBarChartCanvas.style.display = 'none';
+    biasBarChartCanvas.style.width = '400px'; // Smaller width
+    biasBarChartCanvas.style.height = '200px'; // Smaller height
+    articleContainer.appendChild(biasBarChartCanvas);
 
     toggleButton.addEventListener('click', () => {
         if (currentModel === 'huggingface') {
             currentModel = 'gpt4mini';
             toggleButton.textContent = 'Switch to Gemini Flash';
+            renderBiasBarChart(); // Render the graph when switching to GPT-4 Mini
         } else if (currentModel === 'gpt4mini') {
             currentModel = 'gemini';
             toggleButton.textContent = 'Switch to Hugging Face';
+            biasBarChartCanvas.style.display = 'none'; // Hide the graph
         } else {
             currentModel = 'huggingface';
             toggleButton.textContent = 'Switch to GPT-4 Mini';
+            biasBarChartCanvas.style.display = 'none'; // Hide the graph
         }
         renderAnalysis();
     });
@@ -32,6 +45,34 @@ document.addEventListener('DOMContentLoaded', function() {
         } else if (currentModel === 'gemini') {
             displayGeminiFlashAnalysis();
         }
+    }
+
+    function renderBiasBarChart() {
+        biasBarChartCanvas.style.display = 'block';
+
+        new Chart(biasBarChartCanvas.getContext('2d'), {
+            type: 'bar',
+            data: {
+                labels: ['Biased', 'Non-Biased'],
+                datasets: [{
+                    label: 'Bias Analysis',
+                    data: [85, 15], // Placeholder data
+                    backgroundColor: ['#FF6384', '#36A2EB'],
+                    borderColor: ['#FF6384', '#36A2EB'],
+                    borderWidth: 1
+                }]
+            },
+            options: {
+                responsive: true,
+                maintainAspectRatio: false,
+                scales: {
+                    y: {
+                        beginAtZero: true,
+                        max: 100
+                    }
+                }
+            }
+        });
     }
 
     function displayHuggingFaceAnalysis() {
@@ -88,6 +129,8 @@ document.addEventListener('DOMContentLoaded', function() {
         articleWrapper.appendChild(articleDiv);
         articleWrapper.appendChild(analysisDiv);
         articleContainer.appendChild(articleWrapper);
+
+        renderBiasBarChart(); // Render the chart in GPT-4 Mini mode
     }
 
     function displayGeminiFlashAnalysis() {
@@ -110,8 +153,8 @@ document.addEventListener('DOMContentLoaded', function() {
 
     // Report download functionality
     downloadPdfButton.addEventListener('click', () => {
-        const reportContent = generateReportContent();
-        createPdf(reportContent);
+        const reportContent = generateReportContent(); // Use the same content generator
+        createPdf(reportContent); // Generate and download the PDF
     });
 
     downloadTxtButton.addEventListener('click', () => {
@@ -119,7 +162,7 @@ document.addEventListener('DOMContentLoaded', function() {
         const blob = new Blob([reportContent], { type: 'text/plain' });
         const link = document.createElement('a');
         link.href = URL.createObjectURL(blob);
-        link.download = 'bias-analysis-report.txt';
+        link.download = `Report_${userEmail}.txt`;
         link.click();
     });
 
@@ -127,8 +170,12 @@ document.addEventListener('DOMContentLoaded', function() {
         return `
         Article Analysis Report
 
+        User Email: ${userEmail}
+        Article URL: ${articleURL}
+
         Analysis Model: ${currentModel.toUpperCase()}
-        Article Excerpt: ${articleText.substring(0, 200)}... [truncated]
+
+        Article Text: ${articleText}
 
         Analysis Results:
         ${currentModel === 'huggingface' ? JSON.stringify(hfBiasAnalysis, null, 2) :
@@ -136,20 +183,38 @@ document.addEventListener('DOMContentLoaded', function() {
         `;
     }
 
-    function createPdf(content) {
+    async function createPdf(reportContent) {
         const docDefinition = {
             content: [
                 { text: 'Article Analysis Report', style: 'header' },
-                { text: content, style: 'body' }
+                { text: '\nReport Details:', style: 'subheader' },
+                { text: reportContent, style: 'body' },
+                '\n',
             ],
             styles: {
-                header: { fontSize: 18, bold: true, margin: [0, 0, 0, 10] },
-                body: { fontSize: 12, margin: [0, 0, 0, 10] }
-            }
+                header: { fontSize: 18, bold: true, marginBottom: 10 },
+                subheader: { fontSize: 14, bold: true, marginTop: 10 },
+                body: { fontSize: 12 },
+            },
         };
+    
+        const chartElement = document.getElementById('biasBarChart');
+    
+        if (chartElement) {
+            try {
+                const canvas = await html2canvas(chartElement);
+                const imageData = canvas.toDataURL('image/png');
+                docDefinition.content.push({
+                    image: imageData,
+                    width: 500, // Adjust the width of the graph in the PDF
+                });
+            } catch (error) {
+                console.error('Error capturing graph image for PDF:', error);
+            }
+        }
+    
         pdfMake.createPdf(docDefinition).download('bias-analysis-report.pdf');
     }
-
     // Initial render
     renderAnalysis();
 });
