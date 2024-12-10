@@ -2,23 +2,40 @@
 body {
     font-family: Arial, sans-serif;
     background-color: #f4f4f9; /* Softer background for a cleaner look */
-    padding: 20px;
+    padding: 0;
     margin: 0;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    min-height: 100vh;
+    flex-direction: column; /* Allow header to sit above the auth container */
+    min-height: 100vh; /* Ensure the body stretches to the viewport height */
 }
 
+/* Header styling */
+header {
+    background-color: #141049; /* Deep blue for the header */
+    width: 100%;
+    padding: 15px 0;
+    text-align: center;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.1); /* Subtle shadow for depth */
+}
+
+header h1 {
+    font-family: 'Montserrat', sans-serif;
+    color: white;
+    font-size: 24px;
+    margin: 0;
+}
+
+/* Center the authentication container below the header */
 .auth-container {
     max-width: 400px;
-    margin: 0 auto;
+    margin: auto;
     background-color: white;
     padding: 25px 20px;
     border-radius: 12px; /* Softer corners for modern design */
     box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15); /* Enhanced shadow for depth */
     text-align: center;
     animation: fadeIn 0.8s ease-in-out; /* Smooth fade-in effect */
+    flex: 1; /* Allows the container to grow and push the footer down */
 }
 
 h1 {
@@ -28,6 +45,7 @@ h1 {
     font-weight: bold; /* Added emphasis */
 }
 
+/* Form elements */
 label {
     display: block;
     text-align: left;
@@ -54,6 +72,7 @@ input:focus {
     outline: none;
 }
 
+/* Button styling */
 button {
     width: 100%;
     padding: 12px; /* Increased padding */
@@ -78,6 +97,55 @@ button:active {
     background-color: #004080; /* Even darker blue for active state */
 }
 
+/* Footer styling */
+footer {
+    background-color: #141049; /* Match the header's dark blue color */
+    color: white;
+    padding: 20px 0; /* Vertical padding for spacing */
+    text-align: center; /* Center align the content */
+    width: 100%; /* Ensure it stretches the full width */
+}
+
+footer .footer-links {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 20px; /* Space between the links */
+    margin-bottom: 10px;
+}
+
+footer .footer-links a {
+    color: white;
+    text-decoration: none;
+    font-weight: bold; /* Emphasize links */
+    transition: color 0.3s ease;
+}
+
+footer .footer-links a:hover {
+    text-decoration: underline; /* Underline on hover */
+}
+
+footer .social-icons {
+    margin-top: 10px;
+}
+
+footer .social-icons a {
+    color: white;
+    margin: 0 10px; /* Space between icons */
+    font-size: 20px; /* Slightly larger icons */
+    transition: transform 0.3s ease;
+}
+
+footer .social-icons a:hover {
+    transform: scale(1.2); /* Slight zoom on hover */
+}
+
+footer p {
+    margin: 0;
+    font-size: 14px; /* Smaller font for the copyright text */
+}
+
+/* Error message styling */
 .error {
     color: red;
     font-size: 12px;
@@ -97,47 +165,6 @@ button:active {
 .centered-text a:hover {
     color: #0056b3; /* Darker blue on hover */
     text-decoration: underline;
-}
-
-/* Top-right sign-out button styling */
-.top-right {
-    position: absolute;
-    top: 20px;
-    right: 20px;
-}
-
-#signOutButton {
-    background-color: #FF4C4C; /* Brighter red for visibility */
-    color: white;
-    border: none;
-    padding: 10px 15px;
-    border-radius: 6px; /* Softer corners */
-    cursor: pointer;
-    font-weight: bold;
-    transition: background-color 0.3s ease, transform 0.2s ease; /* Smooth hover effects */
-}
-
-#signOutButton:hover {
-    background-color: #cc0000; /* Slightly darker red on hover */
-    transform: scale(1.05); /* Slight scale-up on hover */
-}
-
-#signOutButton:active {
-    background-color: #990000; /* Even darker red for active state */
-    transform: scale(1); /* Reset scaling */
-}
-
-/* Code block styling for pre elements */
-pre {
-    text-align: left;
-    white-space: pre-wrap;
-    background-color: #f9f9f9;
-    padding: 15px;
-    border-radius: 8px; /* Softer corners */
-    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Subtle shadow */
-    font-family: 'Courier New', Courier, monospace;
-    font-size: 14px; /* Slightly larger text for readability */
-    color: #333; /* Darker text for contrast */
 }
 
 /* Smooth fade-in animation */

@@ -5,8 +5,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Sign In</title>
     <link rel="stylesheet" href="css/auth.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
 </head>
 <body>
+    <!-- Header -->
+    <header>
+        <h1>News Bias Check</h1>
+    </header>
+
+    <!-- Authentication Container -->
     <div class="auth-container">
         <h1>Sign In</h1>
         
@@ -28,6 +35,23 @@
         <span id="error-message" class="error"></span>
     </div>
 
+        <!-- Footer -->
+<footer>
+    <div class="container-footer">
+        <div class="footer-links">
+            <a href="about_us.html">About Us</a>
+            <a href="privacy_policy.html">Privacy Policy</a>
+            <div class="social-icons">
+                <a href="#"><i class="fab fa-facebook"></i></a>
+                <a href="#"><i class="fab fa-twitter"></i></a>
+                <a href="#"><i class="fab fa-linkedin"></i></a>
+            </div>
+        </div>
+        <p>&copy; 2024 News Bias Check. All Rights Reserved.</p>
+    </div>
+</footer>
+
+
     <script type="module">
       import { initializeApp } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-app.js";
       import { getAuth, signInWithEmailAndPassword, signInWithPopup, GoogleAuthProvider } from "https://www.gstatic.com/firebasejs/10.14.0/firebase-auth.js";
@@ -48,44 +72,33 @@
 
       // Sign-In button functionality
       document.getElementById('logInButton').addEventListener('click', async () => {
-          console.log("Sign-In button clicked"); // Debugging log
-
           const email = document.getElementById('logInEmail').value;
           const password = document.getElementById('logInPassword').value;
           const errorMessage = document.getElementById('error-message');
 
-          // Check if email and password are provided
           if (!email || !password) {
               errorMessage.textContent = 'Please enter an email and password.';
-              console.warn("Email or password missing"); // Debugging log
               return;
           }
 
           try {
-              // Attempt sign-in with email and password
               const userCredential = await signInWithEmailAndPassword(auth, email, password);
-              console.log("User signed in:", userCredential.user.uid); // Debugging log
               alert('Logged in successfully!');
-              window.location.href = 'index.html'; // Redirect to main page on success
+              window.location.href = 'index.html';
           } catch (error) {
-              console.error("Error during sign-in:", error.message); // Detailed error log
-              errorMessage.textContent = error.message; // Display the error to the user
+              errorMessage.textContent = error.message;
           }
       });
 
       // Google Sign-In button functionality
       document.getElementById('googleSignInButton').addEventListener('click', async () => {
-          console.log("Google Sign-In button clicked"); // Debugging log
-
           const provider = new GoogleAuthProvider();
           try {
               const result = await signInWithPopup(auth, provider);
-              console.log("User signed in with Google:", result.user.uid); // Debugging log
               alert('Logged in with Google successfully!');
-              window.location.href = 'index.html'; // Redirect to main page on success
+              window.location.href = 'index.html';
           } catch (error) {
-              console.error("Error during Google sign-in:", error.message); // Detailed error log
-              alert('Failed to sign in with Google: ' + error.message); // Display error to the user
+              alert('Failed to sign in with Google: ' + error.message);
           }
       });
     </script>

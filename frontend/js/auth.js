@@ -5,13 +5,13 @@ import { getAuth, signOut, onAuthStateChanged } from "https://www.gstatic.com/fi
 
 // Firebase configuration
 const firebaseConfig = {
-    apiKey: import.meta.env.VITE_FIREBASE_API_KEY,
-    authDomain: import.meta.env.VITE_FIREBASE_AUTH_DOMAIN,
-    projectId: import.meta.env.VITE_FIREBASE_PROJECT_ID,
-    storageBucket: import.meta.env.VITE_FIREBASE_STORAGE_BUCKET,
-    messagingSenderId: import.meta.env.VITE_FIREBASE_MESSAGING_SENDER_ID,
-    appId: import.meta.env.VITE_FIREBASE_APP_ID,
-};
+    apiKey: "AIzaSyBnjBn6sTwnqDjrMXdgmFZ2dugrL5OVLTI",
+    authDomain: "news-bias-analyzer.firebaseapp.com",
+    projectId: "news-bias-analyzer",
+    storageBucket: "news-bias-analyzer.appspot.com",
+    messagingSenderId: "661563307465",
+    appId: "1:661563307465:web:648bdabecbcf57b0d96418",
+  };
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
